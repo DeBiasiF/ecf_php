@@ -23,3 +23,4 @@ require_once "./view/partial/navbar.php";
 <?php
 require_once "./view/partial/footer.php";
 ?>
+
