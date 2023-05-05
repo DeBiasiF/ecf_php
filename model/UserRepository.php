@@ -73,6 +73,30 @@ class UserRepository {
             return null;
         }    
     }
+
+    public static function getLogged(String $name, String $psw) : ?User {
+        $connectionDB = Connect::getInstance();
+        $stmt = $connectionDB->prepare("SELECT * FROM __user WHERE name___user = :name");
+        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        if (count($result) !== 0){
+            $user = UserRepository::createUser($result[0]);
+            $registeredPsw = $user->getPassword();
+            if(password_verify($psw, $registeredPsw)){
+                session_start(); //on lance la session avec session
+                $_SESSION['user'] = [
+                    'userId' => $user->getId(),
+                    'userName' => $user->getName()
+                ];
+                return $user;
+            } else {
+                throw new Exception("Nom d'utilisateur et mot de passe invalide");
+                return null;
+            }
+        }    
+    }
+    
     
 }
 ?>
