@@ -9,6 +9,7 @@ function loggin(){
 }
 
 function signUp(){
+    $roles = RoleRepository::getAllRole();
     require_once 'view/signUp.php';
 }
 

@@ -18,6 +18,7 @@
             <?php else : ?>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="/ecf_php/index.php/signup">S'inscrire</a>
                         <a class="nav-link" href="/ecf_php/index.php/loggin">Connexion</a>
                     </li>
                 </ul>

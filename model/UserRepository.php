@@ -29,14 +29,17 @@ class UserRepository {
     public static function addUser() : int {
         $connectionDB = Connect::getInstance();
 
-        $psw = password_hash($_POST['userPsw'], PASSWORD_BCRYPT);
-        $stmt = $connectionDB->prepare('INSERT INTO __user (name___user, password___user, quantity_points___user, Id_role) VALUES(:name, :psw, :points, :Id_role)');
-        $stmt->bindValue(":name", $_POST['userName'], PDO::PARAM_STR);
-        $stmt->bindValue(":psw", $psw, PDO::PARAM_STR);
-        $stmt->bindValue(":points", $_POST['userPoints'], PDO::PARAM_INT);
-        $stmt->bindValue(":Id_role", $_POST['userIdRole'], PDO::PARAM_INT);
-        $stmt->execute();
-        return $connectionDB->lastInsertId();
+        if(($_POST['userPassword']) == ($_POST['userPasswordConfirm'])){
+            
+            $psw = password_hash($_POST['userPassword'], PASSWORD_BCRYPT);
+            $stmt = $connectionDB->prepare('INSERT INTO __user (name___user, password___user, Id___role) VALUES(:name, :psw, :Id_role)');
+            $stmt->bindValue(":name", $_POST['userName'], PDO::PARAM_STR);
+            $stmt->bindValue(":psw", $psw, PDO::PARAM_STR);
+            $stmt->bindValue(":Id_role", $_POST['userRoleId'], PDO::PARAM_INT);
+            $stmt->execute();
+            return $connectionDB->lastInsertId();
+        }
+
     }
 
     public static function updateUser(int $id) : int {

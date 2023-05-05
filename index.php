@@ -36,10 +36,20 @@ switch (getURL()) {
 
     case 'ecf_php/index.php/loggin':
         loggin();
-        if (!empty($_POST['userName']) && !empty($_POST['userPsw'])) {      
-            if (($_SESSION['loggedUser'] = UserRepository::getLogged($_POST['userName'], $_POST['userPsw']))!=null){
+        if (!empty($_POST['userName']) && !empty($_POST['userPassword'])) {      
+            if (($_SESSION['loggedUser'] = UserRepository::getLogged($_POST['userName'], $_POST['userPassword']))!=null){
                 header("Location: /ecf_php/index.php");
             }
+        }
+        break;
+
+    case 'ecf_php/index.php/signup':
+        signUp();
+        if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm']) && !empty($_POST['userRoleId'])) { 
+            UserRepository::addUser();
+            if (($_SESSION['loggedUser'] = UserRepository::getLogged($_POST['userName'], $_POST['userPassword']))!=null){
+                header("Location: /ecf_php/index.php");
+            }          
         }
         break;
 
