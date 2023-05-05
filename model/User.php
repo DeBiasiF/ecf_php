@@ -3,17 +3,18 @@
 class User {
 
     private int $id;
-    private String $pseudo;
+    private String $name;
     private String $password;
-    private String $role;       
+    private int $points;
+    private Role $role;       
    
-
     /**
      * Get the value of id
      *
      * @return int
      */
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
@@ -24,29 +25,34 @@ class User {
      *
      * @return self
      */
-    public function setId(int $id): self {
+    public function setId(int $id): self
+    {
         $this->id = $id;
+
         return $this;
     }
 
     /**
-     * Get the value of pseudo
+     * Get the value of name
      *
      * @return String
      */
-    public function getPseudo(): String {
-        return $this->pseudo;
+    public function getName(): String
+    {
+        return $this->name;
     }
 
     /**
-     * Set the value of pseudo
+     * Set the value of name
      *
-     * @param String $pseudo
+     * @param String $name
      *
      * @return self
      */
-    public function setPseudo(String $pseudo): self {
-        $this->pseudo = $pseudo;
+    public function setName(String $name): self
+    {
+        $this->name = $name;
+
         return $this;
     }
 
@@ -55,7 +61,8 @@ class User {
      *
      * @return String
      */
-    public function getPassword(): String {
+    public function getPassword(): String
+    {
         return $this->password;
     }
 
@@ -66,30 +73,58 @@ class User {
      *
      * @return self
      */
-    public function setPassword(String $password): self {
+    public function setPassword(String $password): self
+    {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of points
+     *
+     * @return int
+     */
+    public function getPoints(): int
+    {
+        return $this->points;
+    }
+
+    /**
+     * Set the value of points
+     *
+     * @param int $points
+     *
+     * @return self
+     */
+    public function setPoints(int $points): self
+    {
+        $this->points = $points;
+
         return $this;
     }
 
     /**
      * Get the value of role
      *
-     * @return String
+     * @return Role
      */
-    public function getRole(): String {
+    public function getRole(): Role
+    {
         return $this->role;
     }
 
     /**
      * Set the value of role
      *
-     * @param String $role
+     * @param Role $role
      *
      * @return self
      */
-    public function setRole(String $role): self {
+    public function setRole(Role $role): self
+    {
         $this->role = $role;
+
         return $this;
     }
-    
 }

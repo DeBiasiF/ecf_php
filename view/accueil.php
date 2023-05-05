@@ -4,27 +4,24 @@ require_once "./view/partial/navbar.php";
 ?>
 
 <div class="container-fluid">
-    <h1>MES CONTACTS</h1>
+    <h1>Les Biens</h1>
     <div class="row">
 
-<?php
-foreach ($contacts as $contact) {
-    $id = $contact->getId();
-    $lastName = strtoupper($contact->getLastname());
-    $firstName = ucfirst(strtolower($contact->getFirstname()));
-    $mail = $contact->getMail();
-    ?>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">&nbsp;</h5>
-                    <p class="card-text"><?=$lastName." ".$firstName?></p>
-                    <p class="card-text"><?=$mail?> <i class="bi bi-envelope"></i></p>
-                    <a href="/Form_Contact/index.php/contact?id=<?=$id?>" class="btn btn-primary">Go somewhere</a>
-                </div>
+<?php foreach ($goods as $good) :?>
+    <div class="col-sm-6">
+        <div class="card">
+            <img src="<?=$good->getImg()?>" class="card-img-top" alt="Image du bien">
+            <div class="card-body">
+                <?php if ($good->getStatus()): ?>
+                    <p class="text-success">DISPONIBLE</p>
+                <?php else: ?>
+                    <p class="text-danger">INDISPONNIBLE</p>
+                <?php endif; ?>
+                <a href="/ecf_php/index.php/good?id=<?=$good->getId()?>" class="btn btn-primary">Plus d'info</a>
             </div>
         </div>
-<?php } ?>
+    </div>
+<?php endforeach ?>
     </div>
 </div>
 <?php

@@ -1,0 +1,78 @@
+<?php
+
+class BorrowingRepository {
+       
+    public static function createBorrowing(Array $myBorrow) : ?Borrowing {
+        $borrowing = new Borrowing();
+        $borrowing->setId($myBorrow['id_borrowing'])
+                ->setStartBorrow($myBorrow['start_borrowing'])
+                ->setEndBorrow($myBorrow['end_borrowing'])
+                ->setBorrower(UserRepository::getUserById($myBorrow['id___user_borrower']))
+                ->setGood(GoodRepository::getGoodById($myBorrow['id_goods']));
+        return $borrowing;                
+    }
+
+    public static function getAllBorrowing() : Array {
+        $connectionDB = Connect::getInstance();
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing;');
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $borrowList=[];
+        foreach ($result as $borrow) {
+            $borrowList[]= self::createBorrowing($borrow);
+        }
+
+        return $borrowList;
+    }
+
+    public static function addBorrowing() : int {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('INSERT INTO borrowing (start_borrowing, end_borrowing, Id___user_borrower, Id_goods) VALUES(:startBorrow, :endBorrow, :borrower, :good);');
+        $stmt->bindValue(":startBorrow", $_POST['startBorrow'], PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", $_POST['endBorrow'], PDO::PARAM_STR);
+        $stmt->bindValue(":borrower", $_POST['borrower'], PDO::PARAM_INT);
+        $stmt->bindValue(":good", $_POST['goodBorrow'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $connectionDB->lastInsertId();
+    }
+
+    public static function updateBorrowing(int $id) : int {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('UPDATE borrowing SET start_borrowing = :startBorrow end_borrowing = :endBorrow Id___user_borrower = :borrower Id_goods = :good WHERE id_borrowing = :id ;');
+        $stmt->bindValue(":startBorrow", $_POST['startBorrow'], PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", $_POST['endBorrow'], PDO::PARAM_STR);
+        $stmt->bindValue(":borrower", $_POST['borrower'], PDO::PARAM_INT);
+        $stmt->bindValue(":good", $_POST['goodBorrow'], PDO::PARAM_INT);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $id;
+    }
+
+    public static function deleteBorrowing(int $id) {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('DELETE FROM borrowing WHERE id_borrowing = :id ;');
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public static  function getBorrowingById(int $id) : ?Borrowing {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE id_borrowing = :id ;');
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $borrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($borrow) !== 0) {
+            return self::createBorrowing($borrow[0]);
+        }else{
+            return null;
+        }    
+    }
+    
+}
+?>
