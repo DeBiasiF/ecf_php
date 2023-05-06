@@ -23,8 +23,8 @@
             <?php else : //Sinon affiche l'inscription ou la connexion ?> 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/ecf_php/index.php/signup">S'inscrire</a>
-                        <a class="nav-link" href="/ecf_php/index.php/loggin">Connexion</a>
+                        <a class="nav-link d-inline-block" href="/ecf_php/index.php/signup">S'inscrire</a>
+                        <a class="nav-link d-inline-block" href="/ecf_php/index.php/loggin">Connexion</a>
                     </li>
                 </ul>
             <?php endif ?>

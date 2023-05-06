@@ -103,9 +103,7 @@ class UserRepository {
                 return null;
             }
         }    
-    }
-    
-    
+    }   
 }
 ?>
 

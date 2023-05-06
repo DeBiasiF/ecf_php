@@ -5,6 +5,7 @@ class Connect extends PDO{
     private static ?Connect $instance = null;
 
 
+    //Privatise la connection du constructeur parent
     private function __construct($dsn, $username, $password, $options){
         parent::__construct($dsn, $username, $password, $options);
     }

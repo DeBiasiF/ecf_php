@@ -42,6 +42,7 @@ require_once "./view/partial/navbar.php";
 //Importe le footer
 require_once "./view/partial/footer.php";
 ?>
+<!--javascript de filtrage par catégories -->
 <script>
     const select = document.getElementById('category-filter');
     const cardContainer = document.getElementById('card-container');
