@@ -18,7 +18,9 @@ require_once "./view/partial/navbar.php";
                 <li><strong>Descriptif : </strong><?= $good->getDescription(); ?></li>
             </ul>
             <a href="/ecf_php/" class="btn btn-primary">Retour à l'accueil</a>
-            <a class="btn btn-outline-primary" href= /ecf_php/index.php/updatecontact?<?=$_SERVER['QUERY_STRING']?>>Modifier le bien</a>            
+            <?php if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getName() == $good->getLender()->getName()) : ?>
+                <a class="btn btn-outline-primary" href= /ecf_php/index.php/updategood?<?=$_SERVER['QUERY_STRING']?>>Modifier le bien</a> 
+            <?php endif ?>           
         </div>
     </div>
 </div>

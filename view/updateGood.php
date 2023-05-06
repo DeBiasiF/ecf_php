@@ -26,6 +26,7 @@ require_once "./view/partial/navbar.php";
             <img id="preview" src="../<?=$good->getImg();?>" alt="Image par défaut" style="max-width: 300px; max-height: 300px;">
         </div>
         <button type="submit" class="btn btn-primary">Envoyer</button>
+        <a href='/ecf_php/index.php/good?id=<?=$good->getId();?>' class="btn btn-secondary">Retour</button>
     </form>
 
     <script>

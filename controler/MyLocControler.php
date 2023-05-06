@@ -1,8 +1,4 @@
 <?php
-spl_autoload_register(function ($class_name) {
-    include './model/'.$class_name . '.php';
-});
-
 
 function loggin(){
     require_once 'view/loggin.php';
@@ -15,6 +11,7 @@ function signUp(){
 
 function showGoods(){
     $goods = GoodRepository::getAllGood();
+    $categories = CategoryRepository::getAllCategory();
     require_once 'view/accueil.php';
 }
 
@@ -32,9 +29,20 @@ function createUser(){
     require_once 'view/createUser.php';
 }
 
+function gestionUser(){
+    $users = UserRepository::getAllUser();
+    require_once 'view/gestionUsers.php';
+}
+
 function updateUser($id){
     $user = UserRepository::getUserById($id);
+    $roles = RoleRepository::getAllRole();
     require_once 'view/updateUser.php';
+}
+
+function deleteUser($id){
+    UserRepository::deleteUser($id);
+    header("Location: /ecf_php");
 }
 
 function updateGood($id){
