@@ -2,6 +2,8 @@
 
 class CategoryRepository {
        
+    
+    //Permet la création d'un Objet "Category"
     public static function createCategory(Array $myCategory) : ?Category {
         $category = new Category();
         $category->setId($myCategory['id_category'])
@@ -10,6 +12,7 @@ class CategoryRepository {
         return $category;                
     }
 
+    //Permet l'appel à l'integralité des catégories et renvoie un tableau d'objet "Category"
     public static function getAllCategory() : Array {
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare('SELECT * FROM category;');
@@ -24,6 +27,7 @@ class CategoryRepository {
         return $categoryList;
     }
 
+    //Permet l'ajout d'une catégorie
     public static function addCategory() : int {
         $connectionDB = Connect::getInstance();
 
@@ -34,6 +38,7 @@ class CategoryRepository {
         return $connectionDB->lastInsertId();
     }
 
+    //Permet l'édition d'une catégorie
     public static function updateCategory(int $id) : int {
         $connectionDB = Connect::getInstance();
 
@@ -45,6 +50,7 @@ class CategoryRepository {
         return $id;
     }
 
+    //Permet la suppression d'une catégoorie
     public static function deleteCategory(int $id) {
         $connectionDB = Connect::getInstance();
 
@@ -53,6 +59,7 @@ class CategoryRepository {
         $stmt->execute();
     }
 
+    //Permet l'appel à un objet "Category" via son ID
     public static  function getCategoryById(int $id) : ?Category {
         $connectionDB = Connect::getInstance();
 

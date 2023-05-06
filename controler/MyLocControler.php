@@ -13,19 +13,13 @@ function signUp(){
     require_once 'view/signUp.php';
 }
 
-function showGoods($goods){
+function showGoods(){
+    $goods = GoodRepository::getAllGood();
     require_once 'view/accueil.php';
 }
 
-function showGoodDetails($good){
-
-    $id = $good->getId();
-    $name = $good->getName();
-    $img = "../".$good->getImg();
-    $description = $good->getDescription();
-    $status = $good->getStatus();
-    $category = $good->getCategory()->getName();
-    $lender = $good->getLender()->getName();
+function showGoodDetails($id){
+    $good = GoodRepository::getGoodById($id);
     require_once 'view/good.php';
 }
 
@@ -38,15 +32,15 @@ function createUser(){
     require_once 'view/createUser.php';
 }
 
-function updateGood($contact){
-    $id = $contact->getId();
-    $lastName = strtoupper($contact->getLastname());
-    $firstName = ucfirst(strtolower($contact->getFirstname()));
-    $mail = $contact->getMail();
-    $phone = $contact->getPhone();
-    $birthday = $contact->getBirthday();
-    $file = "../".$contact->getFile();
-    require_once 'view/updateContact.php';
+function updateUser($id){
+    $user = UserRepository::getUserById($id);
+    require_once 'view/updateUser.php';
+}
+
+function updateGood($id){
+    $good = GoodRepository::getGoodById($id);
+    $categories = CategoryRepository::getAllCategory();
+    require_once 'view/updateGood.php';
 }
 
 

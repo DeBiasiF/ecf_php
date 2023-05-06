@@ -1,4 +1,5 @@
 <?php
+//Importe le header et la navbar
 require_once "./view/partial/header.php";
 require_once "./view/partial/navbar.php";
 ?>
@@ -11,7 +12,7 @@ require_once "./view/partial/navbar.php";
     <div class="mb-3">
         <label for="category" class="form-label">Catégorie</label>
         <select class="form-control" id="category" name="goodCategoryId">
-            <?php foreach ($categories as $category): ?>
+            <?php foreach ($categories as $category): //Génère la liste des categories disponnible lors de l'enreigistrement d'un bien?>
             <option value="<?=$category->getId()?>"><?=$category->getName()?></option>
             <?php endforeach ?>
         </select>
@@ -27,5 +28,6 @@ require_once "./view/partial/navbar.php";
     <button type="submit" class="btn btn-primary">Envoyer</button>
 </form>
 <?php
+//Importe le header et la navbar
 require_once "./view/partial/footer.php";
 ?>

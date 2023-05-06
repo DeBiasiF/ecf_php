@@ -1,25 +1,31 @@
 <?php
-session_start(); 
+//Active la supervariable session
+session_start();
+
+//Importe les controlleurs 
 require_once "./controler/myLocControler.php";
-var_dump($_SESSION);
-var_dump($_POST);
+//var_dump($_SESSION);
+//var_dump($_POST);
 
 switch (getURL()) {
+
+    //Affichage de la page d'accueil
     case 'ecf_php/':
     case 'ecf_php/index.php':
     case 'ecf_php/index.php/accueil':
-        showGoods(GoodRepository::getAllGood());
-        
+        showGoods();
         break;
     
+    //Affiche un seul bien
     case 'ecf_php/index.php/good':
-        if($_GET) showGoodDetails(GoodRepository::getGoodById($_GET['id']));
+        if($_GET) showGoodDetails($_GET['id']);
         if(!empty($_POST['delete'])){
             GoodRepository::deleteGood($_POST['delete']);
             header("Location: /ecf_php");
         }
         break;
     
+    //Affiche une page d'ajout de bien
     case 'ecf_php/index.php/addgood':
         createGood();
         if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])) {           
@@ -27,13 +33,27 @@ switch (getURL()) {
         }
         break;
     
-    case 'ecf_php/index.php/updatecontact':
-        if($_GET) updateContact(ContactRepository::getContactById($_GET['id']));
-        if (!empty($_POST['lastName']) && !empty($_POST['firstName']) && !empty($_POST['mail']) && !empty($_POST['phone']) && !empty($_POST['birthDay'])) {           
-            header("Location: /Form_Contact/index.php/contact?id=".ContactRepository::updateContact($_GET['id']));
+    //Affiche une page d'edition d'un user, si c'est lui meme qui est connecté lui permet de supprimer son compte, si c'est un admin il peut modifier le role en plus
+    case 'ecf_php/index.php/updateuser':
+        if($_GET) updateUser($_GET['id']);
+
+        if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) { 
+            header("Location: /Form_Contact/index.php/user?id=".UserRepository::updateUser($user->getId(), $_POST['userName'], $user->getPoints(), $user->getRole()));
         }
         break;
 
+    //Affiche une page d'edition d'un bien
+    case 'ecf_php/index.php/updategood':
+        if($_GET) updateGood($_GET['id']);
+
+        if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])) { 
+            (!empty($_FILES['goodImg']['tmp_name']))?$img = self::saveImg():$img = self::getGoodById($id)->getImg();
+            header("Location: /Form_Contact/index.php/good?id=".GoodRepository::updateGood($good->getId(), $_POST['goodName'], $_POST['goodDescription'], $img, $_POST['goodCategoryId'], $good->getLender()->getId()));
+        }
+        break;
+
+
+        //Affiche une page de connexion
     case 'ecf_php/index.php/loggin':
         loggin();
         if (!empty($_POST['userName']) && !empty($_POST['userPassword'])) {      
@@ -43,9 +63,10 @@ switch (getURL()) {
         }
         break;
 
+    //Affiche une page d'inscription
     case 'ecf_php/index.php/signup':
         signUp();
-        if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm']) && !empty($_POST['userRoleId'])) { 
+        if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) { 
             UserRepository::addUser();
             if (($_SESSION['loggedUser'] = UserRepository::getLogged($_POST['userName'], $_POST['userPassword']))!=null){
                 header("Location: /ecf_php/index.php");
@@ -53,6 +74,7 @@ switch (getURL()) {
         }
         break;
 
+    //permet la deconnexion 
     case 'ecf_php/index.php/loggout':
         if(!empty($_SESSION['loggedUser'])){
             session_destroy();

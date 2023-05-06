@@ -2,6 +2,8 @@
 
 class RoleRepository {
        
+
+    //Permet la création d'un Objet "Role"
     public static function createRole(Array $myRole) : ?Role {
         $role = new Role();
         $role->setId($myRole['id___role'])
@@ -9,6 +11,7 @@ class RoleRepository {
         return $role;                
     }
 
+    //Permet l'appel à l'integralité des rôles et renvoie un tableau d'objet "Role"
     public static function getAllRole() : Array {
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare('SELECT * FROM __role;');
@@ -23,6 +26,7 @@ class RoleRepository {
         return $roleList;
     }
 
+    //Permet l'ajout d'un rôle
     public static function addRole() : int {
         $connectionDB = Connect::getInstance();
 
@@ -32,6 +36,7 @@ class RoleRepository {
         return $connectionDB->lastInsertId();
     }
 
+    //Permet l'édition d'un rôle
     public static function updateRole(int $id) : int {
         $connectionDB = Connect::getInstance();
 
@@ -42,6 +47,7 @@ class RoleRepository {
         return $id;
     }
 
+    //Permet la suppression d'un rôle
     public static function deleteRole(int $id) {
         $connectionDB = Connect::getInstance();
 
@@ -50,6 +56,7 @@ class RoleRepository {
         $stmt->execute();
     }
 
+    //Permet l'appel à un objet "Role" via son ID
     public static  function getRoleById(int $id) : ?Role {
         $connectionDB = Connect::getInstance();
 

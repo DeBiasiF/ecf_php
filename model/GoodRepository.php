@@ -2,18 +2,21 @@
 
 class GoodRepository {
        
+
+    //Permet la création d'un Objet "Good"
     public static function createGood(Array $myGood) : ?Good {
         $good = new Good();
         $good->setId($myGood['id_goods'])
                 ->setName($myGood['name_goods'])
                 ->setImg($myGood['img_goods'])
-                ->setDescription($myGood['description_goods'])
+                ->setDescription(htmlspecialchars_decode($myGood['description_goods']))
                 ->setStatus($myGood['status_goods'])
                 ->setCategory(CategoryRepository::getCategoryById($myGood['id_category']))
                 ->setLender(UserRepository::getUserById($myGood['id___user_lender']));
         return $good;                
     }
 
+    //Permet l'appel à l'integralité des biens et renvoie un tableau d'objet "Good"
     public static function getAllGood() : Array {
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare('SELECT * FROM goods;');
@@ -28,6 +31,7 @@ class GoodRepository {
         return $goodList;
     }
 
+    //Permet l'ajout d'un bien
     public static function addGood() : int {
         $connectionDB = Connect::getInstance();
 
@@ -43,22 +47,24 @@ class GoodRepository {
         return $connectionDB->lastInsertId();
     }
 
-    public static function updateGood(int $id) : int {
+    //Permet l'édition d'un bien
+    public static function updateGood(int $id, String $name, String $description, String $img, int $category, int $lender) : int {
         $connectionDB = Connect::getInstance();
 
-        (!empty($_FILES['goodImg']['tmp_name']))?$img = self::saveImg():$img = self::getGoodById($id)->getImg();
-        $stmt = $connectionDB->prepare('UPDATE goods SET img_goods = :img name_goods = :name description_goods = :description status_goods = :status Id_category = :category Id___user_lender = :lender WHERE id_goods = :id ;');
+        $description = htmlspecialchars($description);
+
+        $stmt = $connectionDB->prepare('UPDATE goods SET img_goods = :img name_goods = :name description_goods = :description Id_category = :category Id___user_lender = :lender WHERE id_goods = :id ;');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
-        $stmt->bindValue(":name", $_POST['goodName'], PDO::PARAM_STR);
-        $stmt->bindValue(":description", $_POST['goodDescription'], PDO::PARAM_STR);
-        $stmt->bindValue(":status", $_POST['goodStatus'], PDO::PARAM_STR);
-        $stmt->bindValue(":category", $_POST['goodCategoryId'], PDO::PARAM_INT);
-        $stmt->bindValue(":lender", $_POST['goodLender'], PDO::PARAM_STR);
+        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
+        $stmt->bindValue(":description", $description, PDO::PARAM_STR);
+        $stmt->bindValue(":category", $category, PDO::PARAM_INT);
+        $stmt->bindValue(":lender", $lender, PDO::PARAM_INT);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         return $id;
     }
 
+    //Permet la suppression d'un bien
     public static function deleteGood(int $id) {
         $connectionDB = Connect::getInstance();
 
@@ -67,6 +73,7 @@ class GoodRepository {
         $stmt->execute();
     }
 
+    //Permet l'appel à un objet "Good" via son ID
     public static  function getGoodById(int $id) : ?Good {
         $connectionDB = Connect::getInstance();
 
@@ -82,6 +89,7 @@ class GoodRepository {
         }    
     }
     
+    //Permet la sauvegarde des images
     private static function saveImg() {
         $allowedExtensions = array("jpg", "jpeg", "png", "gif"); // Liste des extensions de fichiers autorisées
         $maxFileSize = 5 * 1024 * 1024; // Taille maximale de fichier autorisée (ici, 5 Mo)

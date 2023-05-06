@@ -2,6 +2,7 @@
 
 class BorrowingRepository {
        
+    //Permet la création d'un Objet "Borrowing"
     public static function createBorrowing(Array $myBorrow) : ?Borrowing {
         $borrowing = new Borrowing();
         $borrowing->setId($myBorrow['id_borrowing'])
@@ -12,6 +13,7 @@ class BorrowingRepository {
         return $borrowing;                
     }
 
+    //Permet l'appel à l'integralité des emprunts et renvoie un tableau d'objet "Borrowing"
     public static function getAllBorrowing() : Array {
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare('SELECT * FROM borrowing;');
@@ -26,6 +28,7 @@ class BorrowingRepository {
         return $borrowList;
     }
 
+    //Permet l'ajout d'un emprunt
     public static function addBorrowing() : int {
         $connectionDB = Connect::getInstance();
 
@@ -38,6 +41,7 @@ class BorrowingRepository {
         return $connectionDB->lastInsertId();
     }
 
+    //Permet l'édition d'un emprunt
     public static function updateBorrowing(int $id) : int {
         $connectionDB = Connect::getInstance();
 
@@ -51,6 +55,7 @@ class BorrowingRepository {
         return $id;
     }
 
+    //Permet la suppression d'un emprunt
     public static function deleteBorrowing(int $id) {
         $connectionDB = Connect::getInstance();
 
@@ -59,6 +64,7 @@ class BorrowingRepository {
         $stmt->execute();
     }
 
+    //Permet l'appel à un objet "Borrowing" via son ID
     public static  function getBorrowingById(int $id) : ?Borrowing {
         $connectionDB = Connect::getInstance();
 

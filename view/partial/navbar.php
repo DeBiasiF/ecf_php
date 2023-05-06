@@ -9,13 +9,13 @@
                     <a class="nav-link" href="/Form_Contact/index.php/addcontact">Créer un contact</a>
                 </li>
             </ul>
-            <?php if (!empty($_SESSION['loggedUser'])) : ?>
+            <?php if (!empty($_SESSION['loggedUser'])) : //Si user authentifié affiche la deconnexion ?> 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/ecf_php/index.php/loggout">Déconnexion</a>
                     </li>
                 </ul>
-            <?php else : ?>
+            <?php else : //Sinon affiche l'inscription ou la connexion ?> 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="/ecf_php/index.php/signup">S'inscrire</a>

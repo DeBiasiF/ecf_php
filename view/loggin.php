@@ -1,4 +1,5 @@
 <?php
+//Importe le header et la navbar
 require_once "./view/partial/header.php";
 require_once "./view/partial/navbar.php";
 ?>
@@ -33,5 +34,6 @@ require_once "./view/partial/navbar.php";
   </div>
 </div>
 <?php
+//Importe le footer
 require_once "./view/partial/footer.php";
 ?>
