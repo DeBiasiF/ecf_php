@@ -29,16 +29,16 @@ class UserRepository {
     }
 
     //Permet l'ajout d'un user
-    public static function addUser() : int {
+    public static function addUser(String $name, int $idRole) : int {
         $connectionDB = Connect::getInstance();
 
         if(($_POST['userPassword']) == ($_POST['userPasswordConfirm'])){
             
             $psw = password_hash($_POST['userPassword'], PASSWORD_BCRYPT);
             $stmt = $connectionDB->prepare('INSERT INTO __user (name___user, password___user, Id___role) VALUES(:name, :psw, :Id_role)');
-            $stmt->bindValue(":name", $_POST['userName'], PDO::PARAM_STR);
+            $stmt->bindValue(":name", $name, PDO::PARAM_STR);
             $stmt->bindValue(":psw", $psw, PDO::PARAM_STR);
-            $stmt->bindValue(":Id_role", $_POST['userRoleId'], PDO::PARAM_INT);
+            $stmt->bindValue(":Id_role", $idRole, PDO::PARAM_INT);
             $stmt->execute();
             return $connectionDB->lastInsertId();
         }

@@ -32,7 +32,7 @@ class GoodRepository {
     }
 
     //Permet l'ajout d'un bien
-    public static function addGood() : int {
+    public static function addGood( String $name, String $description, int $category, int $lender) : int {
         $connectionDB = Connect::getInstance();
 
         $img = self::saveImg();
@@ -42,7 +42,7 @@ class GoodRepository {
         $stmt->bindValue(":description", $_POST['goodDescription'], PDO::PARAM_STR);
         $stmt->bindValue(":status", true, PDO::PARAM_BOOL);
         $stmt->bindValue(":category", $_POST['goodCategoryId'], PDO::PARAM_INT);
-        $stmt->bindValue(":lender", 1, PDO::PARAM_INT);
+        $stmt->bindValue(":lender", $lender, PDO::PARAM_INT);
         $stmt->execute();
         return $connectionDB->lastInsertId();
     }
