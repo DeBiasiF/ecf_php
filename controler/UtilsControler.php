@@ -40,4 +40,19 @@ class UtilsControler {
         return UserRepository::getLogged($name , $psw);
     }
 
+    //Function pour charger les utilitaires dans l'index et la super variable de session
+
+    public static function loadIndex(){
+        //Autoloader
+        spl_autoload_register(function ($class_name) {
+            if(file_exists('./model/'.$class_name . '.php')){
+                include './model/'.$class_name . '.php';
+            }else{
+                include './controler/'.$class_name . '.php';
+            }      
+        });
+        //Active la supervariable session
+        session_start();
+    }
+
 }

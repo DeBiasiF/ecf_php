@@ -1,16 +1,7 @@
 <?php
-spl_autoload_register(function ($class_name) {
-    if(file_exists('./model/'.$class_name . '.php')){
-        include './model/'.$class_name . '.php';
-    }else{
-        include './controler/'.$class_name . '.php';
-    }      
-});
-//Active la supervariable session
-session_start();
+require './controler/UtilsControler.php';
+UtilsControler::loadIndex();
 
-//Importe les controlleurs 
-//require_once "./controler/myLocControler.php";
 // var_dump($_SESSION);
 // var_dump($_POST);
 
