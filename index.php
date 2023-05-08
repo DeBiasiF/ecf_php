@@ -32,7 +32,7 @@ switch (UtilsControler::getURL()) {
         }
         break;
 
-            //Affiche une page d'edition d'un bien
+    //Affiche une page d'edition d'un bien
     case 'ecf_php/index.php/updategood':
         if($_GET) GoodsControler::updateGood($_GET['id']);
 
@@ -41,7 +41,6 @@ switch (UtilsControler::getURL()) {
             header("Location: /Form_Contact/index.php/good?id=".GoodsControler::goodUpdated($good->getId(), $_POST['goodName'], $_POST['goodDescription'], $img, $_POST['goodCategoryId'], $good->getLender()->getId()));
         }
         break;
-
 
     //Affiche la gestion des users
     case 'ecf_php/index.php/gestionuser':

@@ -82,7 +82,7 @@ class UserRepository {
     }
 
     //Permet l'identification et retourne l'objet "User" approprié
-    public static function getLogged(String $name, String $psw) : ?User {
+    public static function getLogged(String $name, String $psw){
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare("SELECT * FROM __user WHERE name___user = :name");
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
@@ -92,7 +92,7 @@ class UserRepository {
             $user = UserRepository::createUser($result[0]);
             $registeredPsw = $user->getPassword();
             if(password_verify($psw, $registeredPsw)){
-                session_start(); //on lance la session avec session
+                session_start(); //on lance la session
                 $_SESSION['user'] = [
                     'userId' => $user->getId(),
                     'userName' => $user->getName()
