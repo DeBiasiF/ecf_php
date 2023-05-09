@@ -42,6 +42,19 @@ switch (UtilsControler::getURL()) {
         }
         break;
 
+    //Affiche une page d'ajout d'une reservation
+    case 'ecf_php/index.php/borrow':
+        if (!empty($_SESSION['loggedUser'])) {
+            if($_GET) GoodsControler::createBorrow($_GET['id']);
+            if (!empty($_POST['beginDate']) && !empty($_POST['endDate']) && !empty($_POST['goodName']) && !empty($_SESSION['loggedUser'])) {           
+                header("Location: /ecf_php/index.php/good?id=".BorrowingRepository::addBorrowing($_POST['beginDate'], $_POST['endDate'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId()));
+            }
+        }else {
+            header("Location: /ecf_php");
+        } 
+
+        break;
+
     //Affiche la gestion des users
     case 'ecf_php/index.php/gestionuser':
         UserControler::gestionUser();
@@ -69,9 +82,14 @@ switch (UtilsControler::getURL()) {
     case 'ecf_php/index.php/loggin':
         UtilsControler::loggin();
         if (!empty($_POST['userName']) && !empty($_POST['userPassword'])) {      
-            if (($_SESSION['loggedUser'] = UtilsControler::getLogged(trim($_POST['userName']), trim($_POST['userPassword'])))!=null){
+           try {
+                $_SESSION['loggedUser'] = UtilsControler::getLogged(trim($_POST['userName']), trim($_POST['userPassword']));
                 header("Location: /ecf_php/index.php");
+            }catch(Exception $e){
+                $errorMessage = $e->getMessage();
             }
+        } else {
+            $errorMessage = sprintf('Les informations ne permettent pas de vous identifier');
         }
         break;
 

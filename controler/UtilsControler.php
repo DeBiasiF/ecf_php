@@ -16,11 +16,6 @@ class UtilsControler {
     //Fontion d'accède à la page pour se connecter
     public static function loggin() : void {
         require_once 'view/loggin.php';
-        if (!empty($_POST['userName']) && !empty($_POST['userPassword'])) {      
-            if (($_SESSION['loggedUser'] = UserRepository::getLogged(trim($_POST['userName']), trim($_POST['userPassword'])))!=null){
-                header("Location: /ecf_php/index.php");
-            }
-        }
     }
 
     //Fontion d'accède à la page pour s'inscrire
@@ -37,7 +32,13 @@ class UtilsControler {
 
     //Fonction de vérification de connection
     public static function getLogged(String $name , String $psw) : ?User {
-        return UserRepository::getLogged($name , $psw);
+        try{
+            $user = UserRepository::getLogged($name , $psw);
+            
+        }catch(Exception $e){
+            $errorMessage = $e->getMessage();
+        }
+        return $user;
     }
 
     //Function pour charger les utilitaires dans l'index et la super variable de session

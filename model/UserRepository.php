@@ -82,14 +82,14 @@ class UserRepository {
     }
 
     //Permet l'identification et retourne l'objet "User" approprié
-    public static function getLogged(String $name, String $psw){
+    public static function getLogged(String $name, String $psw) {
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare("SELECT * FROM __user WHERE name___user = :name");
         $stmt->bindValue(':name', $name, PDO::PARAM_STR);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         if (count($result) !== 0){
-            $user = UserRepository::createUser($result[0]);
+            $user = self::createUser($result[0]);
             $registeredPsw = $user->getPassword();
             if(password_verify($psw, $registeredPsw)){
                 session_start(); //on lance la session
@@ -100,7 +100,6 @@ class UserRepository {
                 return $user;
             } else {
                 throw new Exception("Nom d'utilisateur et mot de passe invalide");
-                return null;
             }
         }    
     }   

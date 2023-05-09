@@ -79,6 +79,26 @@ class BorrowingRepository {
             return null;
         }    
     }
+
+    //Permet l'appel à une liste d'objet "Borrowing" via leur bien respectif
+    public static function getNextBorrowingByGood(int $id) : ?Array {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND end_borrowing > CURRENT_DATE;');
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $borrows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($borrows) !== 0) {
+            $borrowList=[];
+            foreach ($borrows as $borrow) {
+                $borrowList[]= self::createBorrowing($borrow);
+            }
+        return $borrowList;
+        }else{
+            return null;
+        }    
+    }
     
 }
 ?>

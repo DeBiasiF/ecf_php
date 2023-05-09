@@ -2,14 +2,14 @@
     <div class="container">
         <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
             <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/ecf_php/index.php">Accueil</a>
+                </li>
                 <?php if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getRole()->getId() == 1) : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/ecf_php/index.php/gestionuser">Gestion Utilisateurs</a>
                 </li>
                 <?php endif ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="/Form_Contact/index.php/addcontact">Créer un contact</a>
-                </li>
             </ul>
             <?php if (!empty($_SESSION['loggedUser'])) : //Si user authentifié affiche la deconnexion ?> 
                 <ul class="navbar-nav ml-auto">

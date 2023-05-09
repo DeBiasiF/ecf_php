@@ -13,6 +13,7 @@ class GoodsControler {
     //Fontion d'accès à la page d'affichage d'un bien
     public static function showGoodDetails($id) : void {
         $good = GoodRepository::getGoodById($id);
+        $borrows = BorrowingRepository::getNextBorrowingByGood($id);
         require_once 'view/good.php';
     }
 
@@ -43,5 +44,12 @@ class GoodsControler {
     //Fonction de suppression d'un bien
     public static function deleteGood(int $id){
         GoodRepository::deleteGood($id);
+    }
+
+    //Fonction d'affichage de la page de reservation
+    public static function createBorrow(int $id){
+        $good = GoodRepository::getGoodById($id);
+        $borrows = BorrowingRepository::getNextBorrowingByGood($id);
+        require_once 'view/borrow.php';
     }
 }
