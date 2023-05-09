@@ -34,8 +34,8 @@ require_once "./view/partial/navbar.php";
                     <?php if($borrows != null) : ?>
                         <?php foreach ($borrows as $borrow) : ?>
                             <tr>
-                                <td><?php date("d-m-Y", strtotime($borrow->getStartBorrow())); ?></td>
-                                <td><?php date("d-m-Y", strtotime($borrow->getEndBorrow())); ?></td>
+                                <td><?= date("d-m-Y", strtotime($borrow->getStartBorrow())); ?></td>
+                                <td><?= date("d-m-Y", strtotime($borrow->getEndBorrow())); ?></td>
                                 <td><?= $borrow->getBorrower()->getName(); ?></td>
                             </tr>
                         <?php endforeach ?>

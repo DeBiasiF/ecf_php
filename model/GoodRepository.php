@@ -10,7 +10,6 @@ class GoodRepository {
                 ->setName($myGood['name_goods'])
                 ->setImg($myGood['img_goods'])
                 ->setDescription(htmlspecialchars_decode($myGood['description_goods']))
-                ->setStatus($myGood['status_goods'])
                 ->setCategory(CategoryRepository::getCategoryById($myGood['id_category']))
                 ->setLender(UserRepository::getUserById($myGood['id___user_lender']));
         return $good;                
@@ -35,15 +34,16 @@ class GoodRepository {
     public static function addGood( String $name, String $description, int $category, int $lender) : int {
         $connectionDB = Connect::getInstance();
 
+        $description = htmlspecialchars($description);
         $img = self::saveImg();
-        $stmt = $connectionDB->prepare('INSERT INTO goods (img_goods, name_goods, description_goods, status_goods, Id_category, Id___user_lender) VALUES(:img, :name, :description, :status, :category, :lender);');
+        $stmt = $connectionDB->prepare('INSERT INTO goods (img_goods, name_goods, description_goods, Id_category, Id___user_lender) VALUES(:img, :name, :description, :category, :lender);');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
-        $stmt->bindValue(":name", $_POST['goodName'], PDO::PARAM_STR);
-        $stmt->bindValue(":description", $_POST['goodDescription'], PDO::PARAM_STR);
-        $stmt->bindValue(":status", true, PDO::PARAM_BOOL);
-        $stmt->bindValue(":category", $_POST['goodCategoryId'], PDO::PARAM_INT);
+        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
+        $stmt->bindValue(":description", $description, PDO::PARAM_STR);
+        $stmt->bindValue(":category", $category, PDO::PARAM_INT);
         $stmt->bindValue(":lender", $lender, PDO::PARAM_INT);
         $stmt->execute();
+        echo $description; 
         return $connectionDB->lastInsertId();
     }
 
@@ -52,11 +52,11 @@ class GoodRepository {
         $connectionDB = Connect::getInstance();
 
         $description = htmlspecialchars($description);
-
-        $stmt = $connectionDB->prepare('UPDATE goods SET img_goods = :img name_goods = :name description_goods = :description Id_category = :category Id___user_lender = :lender WHERE id_goods = :id ;');
+        (!empty($img))?$img = GoodRepository::saveImg():$img = self::getGoodById($id)->getImg();
+        $stmt = $connectionDB->prepare('UPDATE goods SET img_goods = :img, name_goods = :nameGood, description_goods = :descriptionGood, Id_category = :category, Id___user_lender = :lender WHERE id_goods = :id ;');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
-        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
-        $stmt->bindValue(":description", $description, PDO::PARAM_STR);
+        $stmt->bindValue(":nameGood", $name, PDO::PARAM_STR);
+        $stmt->bindValue(":descriptionGood", $description, PDO::PARAM_STR);
         $stmt->bindValue(":category", $category, PDO::PARAM_INT);
         $stmt->bindValue(":lender", $lender, PDO::PARAM_INT);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);

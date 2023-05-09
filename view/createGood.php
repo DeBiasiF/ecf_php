@@ -26,6 +26,7 @@ require_once "./view/partial/navbar.php";
         <input type="file" class="form-control" id="image" name="image">
     </div>
     <button type="submit" class="btn btn-primary">Envoyer</button>
+    <a href='/ecf_php/index.php' class="btn btn-secondary">Retour</button>
 </form>
 <?php
 //Importe le header et la navbar

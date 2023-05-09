@@ -100,5 +100,16 @@ class BorrowingRepository {
         }    
     }
     
+    //Permet de retourner la liste des dates de reservation au format json
+    public static function getBorrowingListJson($array) : array {
+        $borrowlist = [];
+        foreach ($array as $borrow) {
+            $borrowlist[] = [
+                "startBorrow" => $borrow->getStartBorrow(),
+                "endBorrow" => $borrow->getEndBorrow()
+            ];
+        }
+        return $borrowlist;
+    }
 }
 ?>

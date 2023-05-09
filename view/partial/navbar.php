@@ -17,6 +17,9 @@
                         <span class="nav-link">Bonjour <?= $_SESSION['loggedUser']->getName(); ?></span>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/ecf_php/index.php/addgood">Inscrire un bien</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/ecf_php/index.php/loggout">Déconnexion</a>
                     </li>
                 </ul>

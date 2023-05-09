@@ -42,7 +42,7 @@ class CategoryRepository {
     public static function updateCategory(int $id) : int {
         $connectionDB = Connect::getInstance();
 
-        $stmt = $connectionDB->prepare('UPDATE category SET name_category = :name valor_point_cat_egory = :reward WHERE id_category = :id ;');
+        $stmt = $connectionDB->prepare('UPDATE category SET name_category = :name, valor_point_cat_egory = :reward WHERE id_category = :id ;');
         $stmt->bindValue(":name", $_POST['categoryName'], PDO::PARAM_STR);
         $stmt->bindValue(":reward", $_POST['categoryReward'], PDO::PARAM_INT);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);

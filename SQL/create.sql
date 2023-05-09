@@ -65,7 +65,6 @@ CREATE TABLE goods(
    name_goods VARCHAR(255)  NOT NULL,
    img_goods VARCHAR(255)  NOT NULL,
    description_goods VARCHAR(255)  NOT NULL,
-   status_goods BOOLEAN NOT NULL DEFAULT true,
    id_category INTEGER,
    id___user_lender INTEGER NOT NULL,
    PRIMARY KEY(id_goods),
@@ -85,7 +84,6 @@ CREATE TABLE borrowing(
    id___user_borrower INTEGER NOT NULL,
    id_goods INTEGER NOT NULL,
    PRIMARY KEY(id_borrowing),
-   UNIQUE(id_goods),
    FOREIGN KEY(id___user_borrower) REFERENCES __user(id___user),
    FOREIGN KEY(id_goods) REFERENCES goods(id_goods)
 );

@@ -28,7 +28,7 @@ switch (UtilsControler::getURL()) {
     case 'ecf_php/index.php/addgood':
         GoodsControler::createGood();
         if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])) {           
-            header("Location: /ecf_php/index.php/good?id=".GoodsControler::addGood($_POST['goodName'], $_POST['goodDescription'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId()));
+            GoodsControler::addGood($_POST['goodName'], $_POST['goodDescription'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId());
         }
         break;
 
@@ -36,9 +36,8 @@ switch (UtilsControler::getURL()) {
     case 'ecf_php/index.php/updategood':
         if($_GET) GoodsControler::updateGood($_GET['id']);
 
-        if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])) { 
-            (!empty($_FILES['goodImg']['tmp_name']))?$img = self::saveImg():$img = self::getGoodById($id)->getImg();
-            header("Location: /Form_Contact/index.php/good?id=".GoodsControler::goodUpdated($good->getId(), $_POST['goodName'], $_POST['goodDescription'], $img, $_POST['goodCategoryId'], $good->getLender()->getId()));
+        if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])&& !empty($_POST['goodId'])) { 
+            GoodsControler::goodUpdated($_POST['goodId'], $_POST['goodName'], $_POST['goodDescription'], $_FILES['image']['tmp_name'], $_POST['goodCategoryId'], $_POST['goodLenderId']);
         }
         break;
 
@@ -47,7 +46,7 @@ switch (UtilsControler::getURL()) {
         if (!empty($_SESSION['loggedUser'])) {
             if($_GET) GoodsControler::createBorrow($_GET['id']);
             if (!empty($_POST['beginDate']) && !empty($_POST['endDate']) && !empty($_POST['goodCategoryId']) && !empty($_SESSION['loggedUser'])) {           
-                header("Location: /ecf_php/index.php/good?id=".BorrowingRepository::addBorrowing($_POST['beginDate'], $_POST['endDate'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId()));
+                GoodsControler::addBorrowing($_POST['beginDate'], $_POST['endDate'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId());
             }
         }else {
             header("Location: /ecf_php");
