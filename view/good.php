@@ -11,7 +11,7 @@ require_once "./view/partial/navbar.php";
             </div>
             <p><strong>Propriétaire : </strong><?= $good->getLender()->getName(); ?></p>
         </div>
-        <div class="col-lg-4 col-md-5 col-sm-12">
+        <div class="col-md-4 col-sm-12">
             <h2>Réservations</h2>
             <div style="max-height: 400px; overflow-y: scroll;">
                 <table class="table">
@@ -19,14 +19,16 @@ require_once "./view/partial/navbar.php";
                         <tr>
                             <th>Date de début</th>
                             <th>Date de fin</th>
+                            <th>par</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php if($borrows != null) : ?>
                             <?php foreach ($borrows as $borrow) : ?>
                                 <tr>
-                                    <td><?php $borrow->get(); ?></td>
-                                    <td><?php $borrow->get(); ?></td>
+                                    <td><?= date("d-m-Y", strtotime($borrow->getStartBorrow())); ?></td>
+                                    <td><?= date("d-m-Y", strtotime($borrow->getEndBorrow())); ?></td>
+                                    <td><?= $borrow->getBorrower()->getName(); ?></td>
                                 </tr>
                             <?php endforeach ?>
                         <?php else : ?>

@@ -46,7 +46,7 @@ switch (UtilsControler::getURL()) {
     case 'ecf_php/index.php/borrow':
         if (!empty($_SESSION['loggedUser'])) {
             if($_GET) GoodsControler::createBorrow($_GET['id']);
-            if (!empty($_POST['beginDate']) && !empty($_POST['endDate']) && !empty($_POST['goodName']) && !empty($_SESSION['loggedUser'])) {           
+            if (!empty($_POST['beginDate']) && !empty($_POST['endDate']) && !empty($_POST['goodCategoryId']) && !empty($_SESSION['loggedUser'])) {           
                 header("Location: /ecf_php/index.php/good?id=".BorrowingRepository::addBorrowing($_POST['beginDate'], $_POST['endDate'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId()));
             }
         }else {

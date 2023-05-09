@@ -52,4 +52,17 @@ class GoodsControler {
         $borrows = BorrowingRepository::getNextBorrowingByGood($id);
         require_once 'view/borrow.php';
     }
+
+    //Function permetant de savoir si un bien est disponnible ou non
+    public static function getGoodDisponibility(int $id): bool {
+        $borrowing = BorrowingRepository::getBorrowingById($id);
+        if ($borrowing != null){
+            $startBorrow = $borrowing->getStartBorrow();
+            $endBorrow = $borrowing->getEndBorrow();
+            $now = date("Y-m-d");
+            return ($now < $startBorrow || $now > $endBorrow);
+        }else {
+            return (true);
+        }        
+    }
 }

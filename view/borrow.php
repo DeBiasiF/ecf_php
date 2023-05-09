@@ -27,14 +27,16 @@ require_once "./view/partial/navbar.php";
                     <tr>
                         <th>Date de début</th>
                         <th>Date de fin</th>
+                        <th>par</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if($borrows != null) : ?>
                         <?php foreach ($borrows as $borrow) : ?>
                             <tr>
-                                <td><?php $borrow->get(); ?></td>
-                                <td><?php $borrow->get(); ?></td>
+                                <td><?php date("d-m-Y", strtotime($borrow->getStartBorrow())); ?></td>
+                                <td><?php date("d-m-Y", strtotime($borrow->getEndBorrow())); ?></td>
+                                <td><?= $borrow->getBorrower()->getName(); ?></td>
                             </tr>
                         <?php endforeach ?>
                     <?php else : ?>
@@ -47,10 +49,11 @@ require_once "./view/partial/navbar.php";
         </div>
     </div>
   </div>
-  <form>
+  <form enctype="multipart/form-data" action="" method="post">
         <div class="form-group">
             <label for="beginDate">Date de début :</label>
             <input type="date" class="form-control" id="beginDate" name="beginDate" required>
+            <input type="hidden" name="goodCategoryId" value = "<?=$good->getId();?>">
         </div>
         <div class="form-group">
             <label for="endDate">Date de fin :</label>
