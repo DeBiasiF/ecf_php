@@ -101,7 +101,27 @@ class UserRepository {
                 throw new Exception("Nom d'utilisateur et mot de passe invalide");
             }
         }    
-    }   
+    }  
+    
+    //Fonction pour retourner la liste des biens d'un user
+    public static function getOwnedGoods(int $id) : array {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM goods WHERE id___user_lender = :id ;');
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $goods = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($goods) !== 0) {
+            $goodList=[];
+            foreach ($goods as $good) {
+                $goodList[]= GoodRepository::createGood($good);
+            }
+            return $goodList;
+        }else{
+            return null;
+        }    
+    }
 }
 ?>
 

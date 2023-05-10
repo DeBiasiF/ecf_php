@@ -38,5 +38,12 @@ class UserControler {
         UserRepository::updateUser($id, $name, $points, $roleId);
     }
 
+    //Fonction d'affichage de la page back office de l'user
+    public static function userBackOffice(int $id){
+        $user = UserRepository::getUserById($id);
+        $ownedGoods = UserRepository::getOwnedGoods($id);
+        require_once 'view/userBackOffice.php';
+    }
+
 
 }

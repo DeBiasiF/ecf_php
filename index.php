@@ -15,10 +15,6 @@ switch (UtilsControler::getURL()) {
     //Affiche un seul bien
     case 'ecf_php/index.php/good':
         if($_GET) GoodsControler::showGoodDetails($_GET['id']);
-        if(!empty($_POST['delete'])){
-            GoodsControler::deleteGood($_POST['delete']);
-            header("Location: /ecf_php");
-        }
         break;
     
     //Affiche une page d'ajout de bien
@@ -36,6 +32,11 @@ switch (UtilsControler::getURL()) {
         if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])&& !empty($_POST['goodId'])) { 
             GoodsControler::goodUpdated($_POST['goodId'], $_POST['goodName'], $_POST['goodDescription'], $_FILES['image']['tmp_name'], $_POST['goodCategoryId'], $_POST['goodLenderId']);
         }
+        break;
+   
+    //Permet la suppression d'un bien
+    case 'ecf_php/index.php/deletegood':
+        if($_GET) GoodsControler::deleteGood($_GET['userId'], $_GET['goodId']);
         break;
 
     //Affiche une page d'ajout d'une reservation
@@ -57,7 +58,7 @@ switch (UtilsControler::getURL()) {
     
     //Affiche une page d'edition d'un user, si c'est lui meme qui est connecté lui permet de supprimer son compte, si c'est un admin il peut modifier le role en plus
     case 'ecf_php/index.php/updateuser':
-        if($isset($_GET) && empty($_POST)) UserControler::updateUser($_GET['id']);
+        if(isset($_GET) && empty($_POST)) UserControler::updateUser($_GET['id']);
         if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) {
             if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getRole()->getId() == 1){
                 header("Location: /ecf_php/index.php/user?id=".UserControler::userUpdated($user->getId(), $_POST['userName'], $user->getPoints(), $user->getRole()->getId()));
@@ -70,6 +71,11 @@ switch (UtilsControler::getURL()) {
     //Permet la suppression d'un user
     case 'ecf_php/index.php/deleteuser':
         if($_GET) UserControler::deleteUser($_GET['id']);
+        break;
+
+    //Permet la suppression d'un user
+    case 'ecf_php/index.php/userbackoffice':
+        if(isset($_GET) && empty($_POST)) UserControler::userBackOffice($_GET['id']);
         break;
 
     //Affiche une page de connexion

@@ -67,11 +67,11 @@ class GoodRepository {
     }
 
     //Permet la suppression d'un bien
-    public static function deleteGood(int $id) {
+    public static function deleteGood(int $goodId) {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('DELETE FROM goods WHERE id_goods = :id ;');
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":id", $goodId, PDO::PARAM_INT);
         $stmt->execute();
     }
 

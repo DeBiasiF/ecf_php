@@ -42,8 +42,9 @@ class GoodsControler {
     }
 
     //Fonction de suppression d'un bien
-    public static function deleteGood(int $id){
-        GoodRepository::deleteGood($id);
+    public static function deleteGood(int $userId, int $goodId){
+        GoodRepository::deleteGood($goodId);
+        header("Location: /ecf_php/index.php/userbackoffice?id=".$userId);
     }
 
     //Fonction d'affichage de la page de reservation
