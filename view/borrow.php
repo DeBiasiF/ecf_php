@@ -53,7 +53,7 @@ require_once "./view/partial/navbar.php";
         <div class="form-group">
             <label for="beginDate">Date de début :</label>
             <input type="date" class="form-control" id="beginDate" name="beginDate" required>
-            <input type="hidden" name="goodCategoryId" value = "<?=$good->getId();?>">
+            <input type="hidden" name="goodId" value = "<?=$good->getId();?>">
         </div>
         <div class="form-group">
             <label for="endDate">Date de fin :</label>

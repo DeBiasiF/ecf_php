@@ -39,7 +39,7 @@ class BorrowingRepository {
             $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
             $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
             $stmt->execute();
-            return $connectionDB->lastInsertId();
+            return $goodBorrowed;
         //}
     }
 
