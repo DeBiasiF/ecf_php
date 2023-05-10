@@ -5,11 +5,13 @@ class GoodRepository {
 
     //Permet la création d'un Objet "Good"
     public static function createGood(Array $myGood) : ?Good {
+        $status = self::getGoodDisponibility($myGood['id_goods']);
         $good = new Good();
         $good->setId($myGood['id_goods'])
                 ->setName($myGood['name_goods'])
                 ->setImg($myGood['img_goods'])
                 ->setDescription(htmlspecialchars_decode($myGood['description_goods']))
+                ->setStatus($status)
                 ->setCategory(CategoryRepository::getCategoryById($myGood['id_category']))
                 ->setLender(UserRepository::getUserById($myGood['id___user_lender']));
         return $good;                
@@ -87,6 +89,17 @@ class GoodRepository {
         }else{
             return null;
         }    
+    }
+
+    //Function permetant de savoir si un bien est disponnible ou non
+    public static function getGoodDisponibility(int $id): bool {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND CURRENT_DATE BETWEEN start_borrowing AND end_borrowing;');
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $status = $stmt->fetch();
+        return !$status;
     }
     
     //Permet la sauvegarde des images

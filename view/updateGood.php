@@ -28,15 +28,25 @@ require_once "./view/partial/navbar.php";
         <img id="preview" src="../<?=$good->getImg();?>" alt="Image par défaut" style="max-width: 300px; max-height: 300px;">
     </div>
     <button type="submit" class="btn btn-primary">Envoyer</button>
-    <a href='/ecf_php/index.php/good?id=<?=$good->getId();?>' class="btn btn-secondary">Retour</button>
+    <a href='/ecf_php/index.php/good?id=<?=$good->getId();?>' class="btn btn-secondary">Retour</a>
 </form>
 
 
-<!--javascript pour afficher les images -->
 <script>
     // Récupérer l'élément input file et l'élément img
     const input = document.getElementById('image');
     const preview = document.getElementById('preview');
+
+    // Fonction pour mettre à jour l'image
+    function updateImage(file) {
+        const url = URL.createObjectURL(file);
+        preview.setAttribute('src', url);
+    }
+
+    // Fonction pour afficher l'image par défaut
+    function showDefaultImage() {
+        preview.setAttribute('src', 'uploads/default_image.jpg');
+    }
 
     // Écouter l'événement "change" sur l'input file
     input.addEventListener('change', function() {
@@ -45,14 +55,11 @@ require_once "./view/partial/navbar.php";
 
         // Vérifier si un fichier a été sélectionné
         if (file) {
-            // Créer un objet URL pour le fichier
-            const url = URL.createObjectURL(file);
-
-            // Mettre à jour l'attribut "src" de l'img
-            preview.setAttribute('src', url);
+            // Mettre à jour l'image
+            updateImage(file);
         } else {
-            // Si aucun fichier n'a été sélectionné, afficher l'image par défaut
-            preview.setAttribute('src', 'uploads/default_image.jpg');
+            // Afficher l'image par défaut
+            showDefaultImage();
         }
     });
 </script>

@@ -33,7 +33,6 @@ class UserRepository {
         $connectionDB = Connect::getInstance();
 
         if(($_POST['userPassword']) == ($_POST['userPasswordConfirm'])){
-            
             $psw = password_hash($_POST['userPassword'], PASSWORD_BCRYPT);
             $stmt = $connectionDB->prepare('INSERT INTO __user (name___user, password___user, Id___role) VALUES(:name, :psw, :Id_role)');
             $stmt->bindValue(":name", $name, PDO::PARAM_STR);

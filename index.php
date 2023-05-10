@@ -1,9 +1,6 @@
 <?php
 require './controler/UtilsControler.php';
-UtilsControler::loadIndex();
-
-// var_dump($_SESSION);
-// var_dump($_POST);
+UtilsControler::loadIndex(true);
 
 switch (UtilsControler::getURL()) {
 
@@ -34,7 +31,7 @@ switch (UtilsControler::getURL()) {
 
     //Affiche une page d'edition d'un bien
     case 'ecf_php/index.php/updategood':
-        if($_GET) GoodsControler::updateGood($_GET['id']);
+        if(isset($_GET) && empty($_POST)) GoodsControler::updateGood($_GET['id']);
 
         if (!empty($_POST['goodName']) && !empty($_POST['goodDescription']) && !empty($_POST['goodCategoryId'])&& !empty($_POST['goodId'])) { 
             GoodsControler::goodUpdated($_POST['goodId'], $_POST['goodName'], $_POST['goodDescription'], $_FILES['image']['tmp_name'], $_POST['goodCategoryId'], $_POST['goodLenderId']);
@@ -44,14 +41,13 @@ switch (UtilsControler::getURL()) {
     //Affiche une page d'ajout d'une reservation
     case 'ecf_php/index.php/borrow':
         if (!empty($_SESSION['loggedUser'])) {
-            if($_GET) GoodsControler::createBorrow($_GET['id']);
-            if (!empty($_POST['beginDate']) && !empty($_POST['endDate']) && !empty($_POST['goodCategoryId']) && !empty($_SESSION['loggedUser'])) {           
+            if(isset($_GET) && empty($_POST)) GoodsControler::createBorrow($_GET['id']);
+            if (!empty($_POST['beginDate']) && !empty($_POST['endDate']) && !empty($_POST['goodCategoryId']) && isset($_SESSION['loggedUser'])) {           
                 GoodsControler::addBorrowing($_POST['beginDate'], $_POST['endDate'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId());
             }
         }else {
             header("Location: /ecf_php");
         } 
-
         break;
 
     //Affiche la gestion des users
@@ -61,8 +57,7 @@ switch (UtilsControler::getURL()) {
     
     //Affiche une page d'edition d'un user, si c'est lui meme qui est connecté lui permet de supprimer son compte, si c'est un admin il peut modifier le role en plus
     case 'ecf_php/index.php/updateuser':
-        if($_GET) UserControler::updateUser($_GET['id']);
-
+        if($isset($_GET) && empty($_POST)) UserControler::updateUser($_GET['id']);
         if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) {
             if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getRole()->getId() == 1){
                 header("Location: /ecf_php/index.php/user?id=".UserControler::userUpdated($user->getId(), $_POST['userName'], $user->getPoints(), $user->getRole()->getId()));

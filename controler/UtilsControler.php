@@ -23,7 +23,8 @@ class UtilsControler {
         $roles = RoleRepository::getAllRole();
         require_once 'view/signUp.php';
         if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) { 
-            UserRepository::addUser(trim($_POST['userName']), $_POST['userRoleId']);
+            $idRole = $_POST['userRoleId']!=null?$_POST['userRoleId']:2;
+            UserRepository::addUser(trim($_POST['userName']), $idRole);
             if (($_SESSION['loggedUser'] = UserRepository::getLogged($_POST['userName'], $_POST['userPassword']))!=null){
                 header("Location: /ecf_php/index.php");
             }
@@ -43,17 +44,39 @@ class UtilsControler {
 
     //Function pour charger les utilitaires dans l'index et la super variable de session
 
-    public static function loadIndex(){
-        //Autoloader
-        spl_autoload_register(function ($class_name) {
-            if(file_exists('./model/'.$class_name . '.php')){
-                include './model/'.$class_name . '.php';
-            }else{
-                include './controler/'.$class_name . '.php';
-            }      
-        });
-        //Active la supervariable session
-        session_start();
+    public static function loadIndex($devLog){
+        // Autoloading des classes
+        function myAutoloader($class_name){
+            $controller_file = 'controler/' . $class_name . '.php';
+            $entities = 'model/' . $class_name . '.php';
+
+            if (file_exists($controller_file)) {
+                include_once $controller_file;
+            } elseif (file_exists($entities)) {
+                include_once $entities;
+            }
+        }
+
+        // Enregistrez la fonction d'autoloading
+        spl_autoload_register('myAutoloader');
+
+        session_start()? "" : print("Connection echouée"); //on lance la session avec session
+        if ($devLog){
+            echo '<pre>';
+            echo 'SESSION';
+            var_dump($_SESSION);
+            echo '</pre>';
+            
+            echo '<pre>';
+            echo 'GET';
+            var_dump($_GET);
+            echo '</pre>';
+            
+            echo '<pre>';
+            echo 'POST';
+            print_r($_POST);
+            echo '</pre>';
+        }
     }
 
 }

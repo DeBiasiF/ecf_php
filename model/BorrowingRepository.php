@@ -32,13 +32,15 @@ class BorrowingRepository {
     public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed) : int {
         $connectionDB = Connect::getInstance();
 
-        $stmt = $connectionDB->prepare('INSERT INTO borrowing (start_borrowing, end_borrowing, Id___user_borrower, Id_goods) VALUES(:startBorrow, :endBorrow, :borrower, :good);');
-        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
-        $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
-        $stmt->execute();
-        return $connectionDB->lastInsertId();
+        //if(self::getBorrowDisponibility($goodBorrowed, $startBorrow, $endBorrow)){
+            $stmt = $connectionDB->prepare('INSERT INTO borrowing (start_borrowing, end_borrowing, Id___user_borrower, Id_goods) VALUES(:startBorrow, :endBorrow, :borrower, :good);');
+            $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+            $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
+            $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
+            $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
+            $stmt->execute();
+            return $connectionDB->lastInsertId();
+        //}
     }
 
     //Permet l'édition d'un emprunt
@@ -103,13 +105,49 @@ class BorrowingRepository {
     //Permet de retourner la liste des dates de reservation au format json
     public static function getBorrowingListJson($array) : array {
         $borrowlist = [];
-        foreach ($array as $borrow) {
-            $borrowlist[] = [
-                "startBorrow" => $borrow->getStartBorrow(),
-                "endBorrow" => $borrow->getEndBorrow()
-            ];
+        if($array){
+            foreach ($array as $borrow) {
+                $borrowlist[] = [
+                    "startBorrow" => $borrow->getStartBorrow(),
+                    "endBorrow" => $borrow->getEndBorrow()
+                ];
+            }
         }
         return $borrowlist;
     }
+
+    //Function permetant de savoir si une plage de reservation est possible
+    public static function getBorrowDisponibility(int $id, String $startBorrow, String $endBorrow): bool {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND :startBorrow BETWEEN start_borrowing AND end_borrowing;');
+        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $testStart = !$stmt->fetch();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND :endBorrow BETWEEN start_borrowing AND end_borrowing;');
+        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $testEnd = !$stmt->fetch();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND start_borrowing BETWEEN :startBorrow AND :endBorrow;');
+        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $testGlobalStart = !$stmt->fetch();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND end_borrowing BETWEEN :startBorrow AND :endBorrow;');
+        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $testGlobalEnd = !$stmt->fetch();
+        
+        return ($testStart && $testEnd && $testGlobalStart && $testGlobalEnd);
+    }
+
 }
 ?>

@@ -38,8 +38,7 @@ class GoodsControler {
 
     //Fonction de savegarde du bien update
     public static function goodUpdated(int $id, String $name, String $description, String $img, int $categoryId, int $lenderId) : void {
-        GoodRepository::updateGood($id, $name, $description, $img, $categoryId, $lenderId);
-        header("Location: /ecf_php/index.php/good?id=".$id);
+        header('location: /ecf_php/index.php/good?id='.GoodRepository::updateGood($id, $name, $description, $img, $categoryId, $lenderId));
     }
 
     //Fonction de suppression d'un bien
@@ -51,24 +50,10 @@ class GoodsControler {
     public static function createBorrow(int $id){
         $good = GoodRepository::getGoodById($id);
         $borrows = BorrowingRepository::getNextBorrowingByGood($id);
-
-        echo json_encode(BorrowingRepository::getBorrowingListJson($borrows));
         require_once 'view/borrow.php';
     }
 
-    //Function permetant de savoir si un bien est disponnible ou non
-    public static function getGoodDisponibility(int $id): bool {
-        $borrowing = BorrowingRepository::getBorrowingById($id);
-        if ($borrowing != null){
-            $startBorrow = $borrowing->getStartBorrow();
-            $endBorrow = $borrowing->getEndBorrow();
-            $now = date("Y-m-d");
-            return ($now < $startBorrow || $now > $endBorrow);
-        }else {
-            return (true);
-        }        
-    }
-
+    
     //Fonction ajout reservation
     public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed){
         header("Location: /ecf_php/index.php/good?id=".BorrowingRepository::addBorrowing($startBorrow, $endBorrow, $borrower, $goodBorrowed));

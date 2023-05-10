@@ -25,7 +25,7 @@ require_once "./view/partial/navbar.php";
                 <div class="card-body">
                     <h5 class="card-title"><?= $good->getName() ?></h5> 
                     <p class="card-text"><?= $good->getCategory()->getName() ?></p>
-                    <?php if (GoodsControler::getGoodDisponibility($good->getId())) : //Affiche le statut a l'instant "t" de chaque objet en vert ou rouge?> 
+                    <?php if (($good->getStatus())) : //Affiche le statut a l'instant "t" de chaque objet en vert ou rouge?> 
                         <p class="text-success">DISPONIBLE</p>
                     <?php else: ?>
                         <p class="text-danger">INDISPONIBLE</p>
