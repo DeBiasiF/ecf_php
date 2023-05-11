@@ -167,7 +167,7 @@ class IndexControler {
             case 'ecf_php/index.php/addcategory':
                 CategoriesControler::createCategory();
                 if (!empty($_POST['categoryName']) && !empty($_POST['categoryPoint']) && $_SESSION['loggedUser']->getRole()->getId() == 1) {           
-                    CategoriesControler::addCategory($_POST['goodName'], $_POST['goodDescription'], $_POST['goodCategoryId'], $_SESSION['loggedUser']->getId());
+                    CategoriesControler::addCategory($_POST['categoryName'], $_POST['categoryPoint']);
                 }
                 break;
         
