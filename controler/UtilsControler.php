@@ -26,7 +26,7 @@ class UtilsControler {
             $idRole = $_POST['userRoleId']!=null?$_POST['userRoleId']:2;
             UserRepository::addUser(trim($_POST['userName']), $idRole);
             if (($_SESSION['loggedUser'] = UserRepository::getLogged($_POST['userName'], $_POST['userPassword']))!=null){
-                header("Location: /ecf_php/index.php");
+                header("Location: ".$_SERVER['SCRIPT_NAME']);
             }
         }
     }

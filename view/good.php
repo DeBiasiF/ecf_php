@@ -52,12 +52,12 @@ require_once "./view/partial/navbar.php";
                     </ul>
                 </div>
                 <div class="col-md-12">
-                    <a href="<?=$_SERVER['HTTP_REFERER']?>" class="btn btn-primary">Retour à l'accueil</a>
+                    <a href="<?=$_SERVER['SCRIPT_NAME']?>" class="btn btn-primary">Retour à l'accueil</a>
                     <?php if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getName() == $good->getLender()->getName()) : ?>
-                        <a class="btn btn-outline-primary" href= /ecf_php/index.php/updategood?<?=$_SERVER['QUERY_STRING']?>>Modifier le bien</a> 
+                        <a class="btn btn-outline-primary" href= "<?=$_SERVER['SCRIPT_NAME']?>/updategood?<?=$_SERVER['QUERY_STRING']?>">Modifier le bien</a> 
                     <?php endif ?>
                     <?php if(!empty($_SESSION['loggedUser'])) : ?>
-                        <a class="btn btn-outline-primary" href= /ecf_php/index.php/borrow?<?=$_SERVER['QUERY_STRING']?>>Reserver le bien</a> 
+                        <a class="btn btn-outline-primary" href= "<?=$_SERVER['SCRIPT_NAME']?>/borrow?<?=$_SERVER['QUERY_STRING']?>">Reserver le bien</a> 
                     <?php endif ?>
                 </div>
             </div>

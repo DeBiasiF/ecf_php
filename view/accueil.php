@@ -30,7 +30,7 @@ require_once "./view/partial/navbar.php";
                     <?php else: ?>
                         <p class="text-danger">INDISPONIBLE</p>
                     <?php endif; ?>
-                    <a href="/ecf_php/index.php/good?id=<?=$good->getId()?>" class="btn btn-primary">Plus d'info</a>
+                    <a href="<?=$_SERVER['SCRIPT_NAME']?>/good?id=<?=$good->getId()?>" class="btn btn-primary">Plus d'info</a>
                 </div>
             </div>
         </div>

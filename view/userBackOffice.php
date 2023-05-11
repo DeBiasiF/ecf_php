@@ -29,8 +29,8 @@ require_once "./view/partial/navbar.php";
                         <p class="text-danger">INDISPONIBLE</p>
                     <?php endif; ?></td>
                     <td>
-						<a href="/ecf_php/index.php/updategood?id=<?=$good->getId();?>" class="btn btn-primary">Editer</a>
-						<a href="/ecf_php/index.php/deletegood?userId=<?=$user->getId();?>&goodId=<?=$good->getId();?>" class="btn btn-danger">Supprimer</a>
+						<a href="<?=$_SERVER['SCRIPT_NAME']?>/updategood?id=<?=$good->getId();?>" class="btn btn-primary">Editer</a>
+						<a href="<?=$_SERVER['SCRIPT_NAME']?>/deletegood?userId=<?=$user->getId();?>&goodId=<?=$good->getId();?>" class="btn btn-danger">Supprimer</a>
 					</td>
                 </tr>
                 <?php endforeach; ?>
@@ -42,7 +42,7 @@ require_once "./view/partial/navbar.php";
         <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</button>
     </form>
     <?php else : ?>
-    <?php header("Location: /ecf_php");?>
+    <?php header("Location: ".$_SERVER['SCRIPT_NAME']);?>
 <?php endif ?>
 <?php
 require_once "./view/partial/footer.php";

@@ -19,7 +19,7 @@ require_once "./view/partial/navbar.php";
 					<td><?=$user->getName();?></td>
 					<td><?=$user->getRole()->getName();?></td>
 					<td>
-						<a href="/ecf_php/index.php/updateuser?id=<?=$user->getId();?>" class="btn btn-primary">Editer</a>
+						<a href="<?=$_SERVER['SCRIPT_NAME']?>/updateuser?id=<?=$user->getId();?>" class="btn btn-primary">Editer</a>
 						<a href="" class="btn btn-danger">Supprimer</a>
 					</td>
 				</tr>

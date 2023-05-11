@@ -22,10 +22,10 @@ require_once "./view/partial/navbar.php";
             </div>
         <?php endif ?>
         <button type="submit" class="btn btn-primary">Enregistrer</button>
-        <a href="/ecf_php/index.php/deleteuser" class="btn btn-primary">Supprimer</a>
+        <a href="<?=$_SERVER['SCRIPT_NAME']?>/deleteuser" class="btn btn-primary">Supprimer</a>
     </form>
 <?php else : ?>
-    <?php header("Location: /ecf_php");?>
+    <?php header("Location: ".$_SERVER['SCRIPT_NAME']);?>
 <?php endif ?>
 <?php
 require_once "./view/partial/footer.php";

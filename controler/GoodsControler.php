@@ -25,7 +25,7 @@ class GoodsControler {
 
     //Fonction sauvegarde du bien ajouté
     public static function addGood(String $name, String $description, int $category, int $lender) : void {
-        header("Location: /ecf_php/index.php/good?id=".GoodRepository::addGood($name, $description, $category, $lender));
+        header("Location: ".$_SERVER['SCRIPT_NAME']."/good?id=".GoodRepository::addGood($name, $description, $category, $lender));
     }
 
     
@@ -38,13 +38,13 @@ class GoodsControler {
 
     //Fonction de savegarde du bien update
     public static function goodUpdated(int $id, String $name, String $description, String $img, int $categoryId, int $lenderId) : void {
-        header('location: /ecf_php/index.php/good?id='.GoodRepository::updateGood($id, $name, $description, $img, $categoryId, $lenderId));
+        header("Location: ".$_SERVER['SCRIPT_NAME']."/good?id=".GoodRepository::updateGood($id, $name, $description, $img, $categoryId, $lenderId));
     }
 
     //Fonction de suppression d'un bien
     public static function deleteGood(int $userId, int $goodId){
         GoodRepository::deleteGood($goodId);
-        header("Location: /ecf_php/index.php/userbackoffice?id=".$userId);
+        header("Location: ".$_SERVER['SCRIPT_NAME']."/userbackoffice?id=".$userId);
     }
 
     //Fonction d'affichage de la page de reservation
@@ -57,7 +57,7 @@ class GoodsControler {
     
     //Fonction ajout reservation
     public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed){
-        header("Location: /ecf_php/index.php/good?id=".BorrowingRepository::addBorrowing($startBorrow, $endBorrow, $borrower, $goodBorrowed));
+        header("Location: ".$_SERVER['SCRIPT_NAME']."/good?id=".BorrowingRepository::addBorrowing($startBorrow, $endBorrow, $borrower, $goodBorrowed));
     }
 
     

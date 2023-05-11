@@ -3,6 +3,7 @@ require './controler/UtilsControler.php';
 UtilsControler::loadIndex(false);
 UtilsControler::getPhpInfo(false);
 
+
 switch (UtilsControler::getURL()) {
 
     //Affichage de la page d'accueil
@@ -48,7 +49,7 @@ switch (UtilsControler::getURL()) {
                 GoodsControler::addBorrowing($_POST['beginDate'], $_POST['endDate'], $_SESSION['loggedUser']->getId(), $_POST['goodId']);
             }
         }else {
-            header("Location: /ecf_php");
+            header("Location: ".$_SERVER['SCRIPT_NAME']);
         } 
         break;
 
@@ -62,9 +63,9 @@ switch (UtilsControler::getURL()) {
         if(isset($_GET) && empty($_POST)) UserControler::updateUser($_GET['id']);
         if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) {
             if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getRole()->getId() == 1){
-                header("Location: /ecf_php/index.php/user?id=".UserControler::userUpdated($user->getId(), $_POST['userName'], $user->getPoints(), $user->getRole()->getId()));
+                header("Location: ".$_SERVER['SCRIPT_NAME']."/user?id=".UserControler::userUpdated($user->getId(), $_POST['userName'], $user->getPoints(), $user->getRole()->getId()));
             }else{
-                header("Location: /ecf_php/index.php/user?id=".UserControler::userUpdated($user->getId(), $_POST['userName'], $user->getPoints(), $_POST['userRoleId']));
+                header("Location: ".$_SERVER['SCRIPT_NAME']."/user?id=".UserControler::userUpdated($user->getId(), $_POST['userName'], $user->getPoints(), $_POST['userRoleId']));
             }
         }
         break;
@@ -85,7 +86,7 @@ switch (UtilsControler::getURL()) {
         if (!empty($_POST['userName']) && !empty($_POST['userPassword'])) {      
            try {
                 $_SESSION['loggedUser'] = UtilsControler::getLogged(trim($_POST['userName']), trim($_POST['userPassword']));
-                header("Location: /ecf_php/index.php");
+                header("Location: ".$_SERVER['SCRIPT_NAME']);
             }catch(Exception $e){
                 $errorMessage = $e->getMessage();
             }
@@ -100,7 +101,7 @@ switch (UtilsControler::getURL()) {
         if (!empty($_POST['userName']) && !empty($_POST['userPassword']) && !empty($_POST['userPasswordConfirm'])) { 
             UserControler::addUser($_POST['userName'], $_POST['userRoleId']);
             if (($_SESSION['loggedUser'] = UtilsControler::getLogged($_POST['userName'], $_POST['userPassword']))!=null){
-                header("Location: /ecf_php/index.php");
+                header("Location: ".$_SERVER['SCRIPT_NAME']);
             }          
         }
         break;
@@ -110,7 +111,7 @@ switch (UtilsControler::getURL()) {
         if(!empty($_SESSION['loggedUser'])){
             session_destroy();
         }
-        header("Location: /ecf_php");
+        header("Location: ".$_SERVER['SCRIPT_NAME']);
         break;
 
     default:
