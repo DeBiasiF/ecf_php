@@ -1,6 +1,7 @@
 <?php
 require './controler/UtilsControler.php';
 UtilsControler::loadIndex(false);
+UtilsControler::getPhpInfo(false);
 
 switch (UtilsControler::getURL()) {
 

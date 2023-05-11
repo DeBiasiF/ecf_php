@@ -43,7 +43,6 @@ class UtilsControler {
     }
 
     //Function pour charger les utilitaires dans l'index et la super variable de session
-
     public static function loadIndex($devLog){
         // Autoloading des classes
         function myAutoloader($class_name){
@@ -62,6 +61,7 @@ class UtilsControler {
 
         session_start()? "" : print("Connection echouée"); //on lance la session avec session
         if ($devLog){
+
             echo '<pre>';
             echo 'SESSION';
             var_dump($_SESSION);
@@ -77,6 +77,11 @@ class UtilsControler {
             print_r($_POST);
             echo '</pre>';
         }
-    }
 
+    }
+    
+    //Fonction pour afficher les info php
+    public static function getPhpInfo($phpInfo){
+        if($phpInfo)phpinfo();
+    }
 }

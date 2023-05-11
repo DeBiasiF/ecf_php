@@ -26,6 +26,7 @@ require_once "./view/partial/navbar.php";
 			<?php endforeach ?>
 		</tbody>
 	</table>
+	<a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</button>
 </div>
 <?php
 //Importe le footer

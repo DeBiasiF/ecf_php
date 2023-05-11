@@ -39,6 +39,7 @@ require_once "./view/partial/navbar.php";
         
         <button type="submit" class="btn btn-primary">Enregistrer</button>
         <a href="/ecf_php/index.php/deleteuser" class="btn btn-primary">Supprimer</a>
+        <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</button>
     </form>
     <?php else : ?>
     <?php header("Location: /ecf_php");?>

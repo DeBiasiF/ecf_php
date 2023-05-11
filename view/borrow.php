@@ -60,7 +60,7 @@ require_once "./view/partial/navbar.php";
             <input type="date" class="form-control" id="endDate" name="endDate" required>
         </div>
         <button type="submit" class="btn btn-primary">Valider</button>
-        <a href='/ecf_php/index.php/good?id=<?=$good->getId();?>' class="btn btn-secondary">Retour</a>
+        <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</a>
     </form>
 </div>
 

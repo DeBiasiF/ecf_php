@@ -52,7 +52,7 @@ require_once "./view/partial/navbar.php";
                     </ul>
                 </div>
                 <div class="col-md-12">
-                    <a href="/ecf_php/" class="btn btn-primary">Retour à l'accueil</a>
+                    <a href="<?=$_SERVER['HTTP_REFERER']?>" class="btn btn-primary">Retour à l'accueil</a>
                     <?php if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getName() == $good->getLender()->getName()) : ?>
                         <a class="btn btn-outline-primary" href= /ecf_php/index.php/updategood?<?=$_SERVER['QUERY_STRING']?>>Modifier le bien</a> 
                     <?php endif ?>
