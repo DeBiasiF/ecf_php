@@ -6,7 +6,7 @@ class CategoryRepository {
     public static function createCategory(Array $myCategory) : ?Category {
         $category = new Category();
         $category->setId($myCategory['id_category'])
-                ->setName($myCategory['name_category'])
+                ->setName(htmlspecialchars_decode($myCategory['name_category']))
                 ->setReward($myCategory['valor_point_cat_egory']);
         return $category;                
     }
@@ -30,6 +30,8 @@ class CategoryRepository {
     public static function addCategory(String $name, int $point) : int {
         $connectionDB = Connect::getInstance();
 
+        $name = htmlspecialchars($name);
+
         $stmt = $connectionDB->prepare('INSERT INTO category (name_category, valor_point_cat_egory) VALUES(:name, :reward);');
         $stmt->bindValue(":name", $name, PDO::PARAM_STR);
         $stmt->bindValue(":reward", $point, PDO::PARAM_INT);
@@ -38,12 +40,14 @@ class CategoryRepository {
     }
 
     //Permet l'édition d'une catégorie
-    public static function updateCategory(int $id) : int {
+    public static function updateCategory(int $id, String $name, int $point) : int {
         $connectionDB = Connect::getInstance();
 
+        $name = htmlspecialchars($name);
+
         $stmt = $connectionDB->prepare('UPDATE category SET name_category = :name, valor_point_cat_egory = :reward WHERE id_category = :id ;');
-        $stmt->bindValue(":name", $_POST['categoryName'], PDO::PARAM_STR);
-        $stmt->bindValue(":reward", $_POST['categoryReward'], PDO::PARAM_INT);
+        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
+        $stmt->bindValue(":reward", $point, PDO::PARAM_INT);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         return $id;

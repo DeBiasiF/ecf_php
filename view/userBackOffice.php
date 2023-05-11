@@ -39,7 +39,9 @@ require_once "./view/partial/navbar.php";
                                 </td>
                                 <td>
                                     <a href="<?=$_SERVER['SCRIPT_NAME']?>/updategood?id=<?=$good->getId();?>" class="btn btn-primary">Editer</a>
-                                    <a href="<?=$_SERVER['SCRIPT_NAME']?>/deletegood?userId=<?=$user->getId();?>&goodId=<?=$good->getId();?>" class="btn btn-danger">Supprimer</a>
+                                    <?php if (($good->getStatus())) : //Affiche le statut a l'instant "t" de chaque objet en vert ou rouge?> 
+                                        <a href="<?=$_SERVER['SCRIPT_NAME']?>/deletegood?userId=<?=$user->getId();?>&goodId=<?=$good->getId();?>" class="btn btn-danger">Supprimer</a>
+                                    <?php endif; ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

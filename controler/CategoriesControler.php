@@ -31,9 +31,8 @@ class CategoriesControler {
 
 
     //Fonction de sauvegarde de l' user update
-    public static function categoryUpdated(int $id, String $name) : int {
-        $user = UserRepository::getUserById($id);
-        return UserRepository::updateUser($user->getId(), $name, $user->getPoints(), $user->getRole()->getId());
+    public static function categoryUpdated(int $id, String $name, int $point) : int {
+        return CategoryRepository::updateCategory($id, $name, $point);
     }
 
 }

@@ -7,7 +7,7 @@ class GoodRepository {
         $status = self::getGoodDisponibility($myGood['id_goods']);
         $good = new Good();
         $good->setId($myGood['id_goods'])
-                ->setName($myGood['name_goods'])
+                ->setName(htmlspecialchars_decode($myGood['name_goods']))
                 ->setImg($myGood['img_goods'])
                 ->setDescription(htmlspecialchars_decode($myGood['description_goods']))
                 ->setStatus($status)
@@ -34,8 +34,10 @@ class GoodRepository {
     public static function addGood( String $name, String $description, int $category, int $lender) : int {
         $connectionDB = Connect::getInstance();
 
+        $name = htmlspecialchars($name);
         $description = htmlspecialchars($description);
         $img = self::saveImg();
+
         $stmt = $connectionDB->prepare('INSERT INTO goods (img_goods, name_goods, description_goods, Id_category, Id___user_lender) VALUES(:img, :name, :description, :category, :lender);');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
         $stmt->bindValue(":name", $name, PDO::PARAM_STR);
@@ -51,8 +53,10 @@ class GoodRepository {
     public static function updateGood(int $id, String $name, String $description, String $img, int $category, int $lender) : int {
         $connectionDB = Connect::getInstance();
 
+        $name = htmlspecialchars($name);
         $description = htmlspecialchars($description);
         (!empty($img))?$img = GoodRepository::saveImg():$img = self::getGoodById($id)->getImg();
+        
         $stmt = $connectionDB->prepare('UPDATE goods SET img_goods = :img, name_goods = :nameGood, description_goods = :descriptionGood, Id_category = :category, Id___user_lender = :lender WHERE id_goods = :id ;');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
         $stmt->bindValue(":nameGood", $name, PDO::PARAM_STR);

@@ -6,7 +6,7 @@ class RoleRepository {
     public static function createRole(Array $myRole) : ?Role {
         $role = new Role();
         $role->setId($myRole['id___role'])
-             ->setName($myRole['name___role']);
+             ->setName(htmlspecialchars_decode($myRole['name___role']));
         return $role;                
     }
 
@@ -26,11 +26,13 @@ class RoleRepository {
     }
 
     //Permet l'ajout d'un rôle
-    public static function addRole() : int {
+    public static function addRole(String $name) : int {
         $connectionDB = Connect::getInstance();
 
+        $name = htmlspecialchars($name);
+
         $stmt = $connectionDB->prepare('INSERT INTO __role (name___role) VALUES(:name) RETURNING id;');
-        $stmt->bindValue(":name", $_POST['roleName'], PDO::PARAM_STR);
+        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
         $stmt->execute();
         return $connectionDB->lastInsertId();
     }

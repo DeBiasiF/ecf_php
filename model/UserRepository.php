@@ -6,7 +6,7 @@ class UserRepository {
     public static function createUser(Array $myUser) : ?User {
         $user = new User();
         $user->setId($myUser['id___user'])
-                ->setName($myUser['name___user'])
+                ->setName(htmlspecialchars_decode($myUser['name___user']))
                 ->setPassword($myUser['password___user'])
                 ->setPoints($myUser['quantity_points___user'])
                 ->setRole(RoleRepository::getRoleById($myUser['id___role']));
