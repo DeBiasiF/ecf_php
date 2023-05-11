@@ -20,7 +20,7 @@ require_once "./view/partial/navbar.php";
 					<td><?=$user->getRole()->getName();?></td>
 					<td>
 						<a href="<?=$_SERVER['SCRIPT_NAME']?>/updateuser?id=<?=$user->getId();?>" class="btn btn-primary">Editer</a>
-						<a href="" class="btn btn-danger">Supprimer</a>
+						<a href="<?=$_SERVER['SCRIPT_NAME']?>/deleteuser?id=<?=$user->getId();?>" class="btn btn-danger">Supprimer</a>
 					</td>
 				</tr>
 			<?php endforeach ?>

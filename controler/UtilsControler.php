@@ -2,7 +2,6 @@
 
 class UtilsControler {
 
-
     //Fonction permetant l'identification de la page souhaité
     public static function getURL() : String {
         $url = $_SERVER['REQUEST_URI'];
@@ -42,46 +41,4 @@ class UtilsControler {
         return $user;
     }
 
-    //Function pour charger les utilitaires dans l'index et la super variable de session
-    public static function loadIndex($devLog){
-        // Autoloading des classes
-        function myAutoloader($class_name){
-            $controller_file = 'controler/' . $class_name . '.php';
-            $entities = 'model/' . $class_name . '.php';
-
-            if (file_exists($controller_file)) {
-                include_once $controller_file;
-            } elseif (file_exists($entities)) {
-                include_once $entities;
-            }
-        }
-
-        // Enregistrez la fonction d'autoloading
-        spl_autoload_register('myAutoloader');
-
-        session_start()? "" : print("Connection echouée"); //on lance la session avec session
-        if ($devLog){
-
-            echo '<pre>';
-            echo 'SESSION';
-            var_dump($_SESSION);
-            echo '</pre>';
-            
-            echo '<pre>';
-            echo 'GET';
-            var_dump($_GET);
-            echo '</pre>';
-            
-            echo '<pre>';
-            echo 'POST';
-            print_r($_POST);
-            echo '</pre>';
-        }
-
-    }
-    
-    //Fonction pour afficher les info php
-    public static function getPhpInfo($phpInfo){
-        if($phpInfo)phpinfo();
-    }
 }

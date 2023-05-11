@@ -58,7 +58,7 @@ class BorrowingRepository {
     }
 
     //Permet la suppression d'un emprunt
-    public static function deleteBorrowing(int $id) {
+    public static function deleteBorrowing(int $id) : void {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('DELETE FROM borrowing WHERE id_borrowing = :id ;');
@@ -127,21 +127,21 @@ class BorrowingRepository {
         $testStart = !$stmt->fetch();
 
         $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND :endBorrow BETWEEN start_borrowing AND end_borrowing;');
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $testEnd = !$stmt->fetch();
 
         $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND start_borrowing BETWEEN :startBorrow AND :endBorrow;');
         $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $testGlobalStart = !$stmt->fetch();
 
         $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE Id_goods = :id AND end_borrowing BETWEEN :startBorrow AND :endBorrow;');
         $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $testGlobalEnd = !$stmt->fetch();

@@ -2,7 +2,6 @@
 
 class GoodRepository {
        
-
     //Permet la création d'un Objet "Good"
     public static function createGood(Array $myGood) : ?Good {
         $status = self::getGoodDisponibility($myGood['id_goods']);
@@ -28,7 +27,6 @@ class GoodRepository {
         foreach ($result as $good) {
             $goodList[]= self::createGood($good);
         }
-
         return $goodList;
     }
 
@@ -67,7 +65,7 @@ class GoodRepository {
     }
 
     //Permet la suppression d'un bien
-    public static function deleteGood(int $goodId) {
+    public static function deleteGood(int $goodId) : void {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('DELETE FROM goods WHERE id_goods = :id ;');
@@ -103,7 +101,7 @@ class GoodRepository {
     }
     
     //Permet la sauvegarde des images
-    private static function saveImg() {
+    private static function saveImg() : String {
         $allowedExtensions = array("jpg", "jpeg", "png", "gif"); // Liste des extensions de fichiers autorisées
         $maxFileSize = 5 * 1024 * 1024; // Taille maximale de fichier autorisée (ici, 5 Mo)
         if(isset($_FILES['image'])) {

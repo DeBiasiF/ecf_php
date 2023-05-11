@@ -1,8 +1,7 @@
 <?php 
 
 class GoodsControler {
-
-    
+   
     //Fontion d'accède à la page d'accueil
     public static function showGoods() : void {
         $goods = GoodRepository::getAllGood();
@@ -27,7 +26,6 @@ class GoodsControler {
     public static function addGood(String $name, String $description, int $category, int $lender) : void {
         header("Location: ".$_SERVER['SCRIPT_NAME']."/good?id=".GoodRepository::addGood($name, $description, $category, $lender));
     }
-
     
     //Fonction d'accès à la page d'édition d'un bien
     public static function updateGood($id) : void {
@@ -42,23 +40,27 @@ class GoodsControler {
     }
 
     //Fonction de suppression d'un bien
-    public static function deleteGood(int $userId, int $goodId){
+    public static function deleteGood(int $userId, int $goodId) : void {
         GoodRepository::deleteGood($goodId);
-        header("Location: ".$_SERVER['SCRIPT_NAME']."/userbackoffice?id=".$userId);
+        header("Location: ".$_SERVER['HTTP_REFERER']);
     }
 
     //Fonction d'affichage de la page de reservation
-    public static function createBorrow(int $id){
+    public static function createBorrow(int $id) : void {
         $good = GoodRepository::getGoodById($id);
         $borrows = BorrowingRepository::getNextBorrowingByGood($id);
         require_once 'view/borrow.php';
     }
 
-    
     //Fonction ajout reservation
-    public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed){
+    public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed) : void {
         header("Location: ".$_SERVER['SCRIPT_NAME']."/good?id=".BorrowingRepository::addBorrowing($startBorrow, $endBorrow, $borrower, $goodBorrowed));
     }
 
+    //Fonction de suppression d'une réservation
+    public static function deleteBorrowing(int $id) : void {
+        BorrowingRepository::deleteBorrowing($id);
+        header("Location: ".$_SERVER['HTTP_REFERER']);
+    }
     
 }

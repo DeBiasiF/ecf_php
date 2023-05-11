@@ -28,12 +28,12 @@ class CategoryRepository {
     }
 
     //Permet l'ajout d'une catégorie
-    public static function addCategory() : int {
+    public static function addCategory(String $name, int $point) : int {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('INSERT INTO category (name_category, valor_point_cat_egory) VALUES(:name, :reward);');
-        $stmt->bindValue(":name", $_POST['categoryName'], PDO::PARAM_STR);
-        $stmt->bindValue(":reward", $_POST['categoryReward'], PDO::PARAM_INT);
+        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
+        $stmt->bindValue(":reward", $point, PDO::PARAM_INT);
         $stmt->execute();
         return $connectionDB->lastInsertId();
     }

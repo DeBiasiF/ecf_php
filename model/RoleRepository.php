@@ -2,7 +2,6 @@
 
 class RoleRepository {
        
-
     //Permet la création d'un Objet "Role"
     public static function createRole(Array $myRole) : ?Role {
         $role = new Role();
@@ -48,7 +47,7 @@ class RoleRepository {
     }
 
     //Permet la suppression d'un rôle
-    public static function deleteRole(int $id) {
+    public static function deleteRole(int $id) : void {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('DELETE FROM __role WHERE id___role = :id ;');

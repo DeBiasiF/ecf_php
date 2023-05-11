@@ -26,7 +26,7 @@ require_once "./view/partial/navbar.php";
                         <input type="password" class="form-control" id="password" name="userPassword" placeholder="Enter password" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" required>Login</button>
-                    <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</button>
+                    <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</a>
                 </form>
               </div>
           </div>
