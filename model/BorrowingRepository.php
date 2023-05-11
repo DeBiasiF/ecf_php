@@ -30,9 +30,10 @@ class BorrowingRepository {
 
     //Permet l'ajout d'un emprunt
     public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed) : int {
+        
         $connectionDB = Connect::getInstance();
 
-        //if(self::getBorrowDisponibility($goodBorrowed, $startBorrow, $endBorrow)){
+        if(self::getBorrowDisponibility($goodBorrowed, $startBorrow, $endBorrow)){
             $stmt = $connectionDB->prepare('INSERT INTO borrowing (start_borrowing, end_borrowing, Id___user_borrower, Id_goods) VALUES(:startBorrow, :endBorrow, :borrower, :good);');
             $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
             $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
@@ -40,21 +41,23 @@ class BorrowingRepository {
             $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
             $stmt->execute();
             return $goodBorrowed;
-        //}
+        }
     }
 
     //Permet l'édition d'un emprunt
     public static function updateBorrowing(int $id, String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed) : int {
         $connectionDB = Connect::getInstance();
 
-        $stmt = $connectionDB->prepare('UPDATE borrowing SET start_borrowing = :startBorrow end_borrowing = :endBorrow Id___user_borrower = :borrower Id_goods = :good WHERE id_borrowing = :id ;');
-        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
-        $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $id;
+        if(self::getBorrowDisponibility($goodBorrowed, $startBorrow, $endBorrow)){
+            $stmt = $connectionDB->prepare('UPDATE borrowing SET start_borrowing = :startBorrow end_borrowing = :endBorrow Id___user_borrower = :borrower Id_goods = :good WHERE id_borrowing = :id ;');
+            $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
+            $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
+            $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
+            $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
+            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $id;
+        }
     }
 
     //Permet la suppression d'un emprunt

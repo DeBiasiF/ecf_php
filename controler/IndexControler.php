@@ -204,9 +204,15 @@ class IndexControler {
                 }
                 header("Location: ".$_SERVER['SCRIPT_NAME']);
                 break;
+
+            //permet l'appel a l'api
+            case 'ecf_php/index.php/API/api.php':
+                if($_GET) require_once 'API/api.php';
+                break;
         
             //Gestion par defaut
             default:
+                header("HTTP/1.0 405 Method Not Allowed");
                 break;
         }
     }

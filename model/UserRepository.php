@@ -59,10 +59,12 @@ class UserRepository {
 
     //Permet la suppression d'un user
     public static function deleteUser(int $id) : void {
-        $connectionDB = Connect::getInstance();
-        $stmt = $connectionDB->prepare('DELETE FROM __user WHERE id___user = :id ;');
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-        $stmt->execute();
+        if(self::getGoodRented($id)){
+            $connectionDB = Connect::getInstance();
+            $stmt = $connectionDB->prepare('DELETE FROM __user WHERE id___user = :id ;');
+            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            $stmt->execute();
+        }
     }
 
     //Permet l'appel à un objet "User" via son ID
@@ -121,6 +123,18 @@ class UserRepository {
         }else{
             return null;
         }    
+    }
+
+    //Function permetant de savoir si un utilisateur a un bien prêté
+    public static function getGoodRented (int $id): bool {
+        $connectionDB = Connect::getInstance();
+
+        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE id___user_borrower = :id AND CURRENT_DATE BETWEEN start_borrowing AND end_borrowing;');
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $status = $stmt->fetch();
+        return !$status;
+        
     }
 }
 ?>

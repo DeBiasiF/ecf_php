@@ -49,21 +49,59 @@ require_once "./view/partial/navbar.php";
             </div>
         </div>
     </div>
-    <form enctype="multipart/form-data" action="" method="post">
+    <form id='form' enctype="multipart/form-data" action="" method="post">
         <div class="form-group">
             <label for="beginDate">Date de début :</label>
             <input type="date" class="form-control" id="beginDate" name="beginDate" required>
-            <input type="hidden" name="goodId" value = "<?=$good->getId();?>">
+            <input type="hidden" id="goodId" name="goodId" value = "<?=$good->getId();?>">
         </div>
         <div class="form-group">
             <label for="endDate">Date de fin :</label>
             <input type="date" class="form-control" id="endDate" name="endDate" required>
         </div>
-        <button type="submit" class="btn btn-primary">Valider</button>
+        <button type="submit" class="btn btn-primary" id="send">Valider</button>
         <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</a>
     </form>
 </div>
 
+<script>
+
+    const valid = () => {
+    // Récupérer l'élément input idGood, l'élément de la date de debut et l'élément de la date de fin
+    const send = document.querySelector("#send");
+    const goodId = document.querySelector('#goodId').value;
+    const beginDate = document.querySelector('#beginDate').value;
+    const endDate = document.querySelector('#endDate').value;
+
+
+    return fetch(`API/api.php?action=borrowDisponibility&id=${goodId}&start=${beginDate}&end=${endDate}`)
+        .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+        })
+        .then(data => {
+        return data.success;
+        })
+        .catch(error => {
+        console.error(error);
+        return false; // retourne false en cas d'erreur
+        });
+    };
+
+    send.addEventListener("click", e => {
+        e.preventDefault();
+        valid().then(isValid => {
+            if (isValid) {
+                document.querySelector('#form').submit();
+            } else {
+                alert('Cette date de prêt n\'est pas disponnible.');
+            }
+        });
+    });
+
+</script>
 <?php
 //Importe le footer
 require_once "./view/partial/footer.php";
