@@ -32,11 +32,18 @@ class UserControler {
     }
 
     //Fonction de sauvegarde de l' user update
-    public static function userUpdated(int $id, String $name) : int {
+    public static function userUpdated(int $id, String $name, ?int $point) : int {
+        $user = UserRepository::getUserById($id);
+        if($point == null)$point= $user->getPoints();
+        return UserRepository::updateUser($user->getId(), $name, $point, $user->getRole()->getId());
+    }
+
+    //Fonction de sauvegarde de l' user update avec point
+    public static function userUpdatedPoint(int $id, String $name, int $point) : int {
         $user = UserRepository::getUserById($id);
         return UserRepository::updateUser($user->getId(), $name, $user->getPoints(), $user->getRole()->getId());
     }
-
+    
     //Fonction d'affichage de la page back office de l'user
     public static function userBackOffice(int $id) : void {
         $user = UserRepository::getUserById($id);

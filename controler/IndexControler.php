@@ -120,7 +120,7 @@ class IndexControler {
                     $_SESSION['returnDirection'] = $_SERVER['HTTP_REFERER'];
                    }
                    if (!empty($_POST['userName']) && ($_SESSION['loggedUser']->getId() == $_GET['id'] || $_SESSION['loggedUser']->getRole()->getId() == 1)) {
-                       if(UserControler::userUpdated($_GET['id'], $_POST['userName'])){
+                    if (($_SESSION['loggedUser']->getRole()->getId() == 1)?UserControler::userUpdated($_GET['id'], $_POST['userName'], $_POST['userPoint']):UserControler::userUpdated($_GET['id'], $_POST['userName'], null)){
                            $return = $_SESSION['returnDirection'];
                            unset($_SESSION['returnDirection']);
                            header("Location: ".$return);

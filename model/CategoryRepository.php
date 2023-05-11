@@ -1,8 +1,7 @@
 <?php
 
 class CategoryRepository {
-       
-    
+        
     //Permet la création d'un Objet "Category"
     public static function createCategory(Array $myCategory) : ?Category {
         $category = new Category();

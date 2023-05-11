@@ -8,7 +8,7 @@ require_once "./view/partial/navbar.php";
             <label for="userName" class="form-label">Nom d'utilisateur</label>
             <input type="text" class="form-control" id="userName" name="userName" placeholder="Votre nom" value= "<?=$user->getName();?>">
             <label for="userPoint" class="form-label">Points cumulé</label>
-            <input type="text" class="form-control" id="userPoint" name="userPoint" value= "<?=$user->getPoints();?>" readonly>
+            <input type="text" class="form-control" id="userPoint" name="userPoint" value= "<?=$user->getPoints();?>" <?php ($_SESSION['loggedUser']->getRole()->getId() == 1)?"":"readonly"?>>
         </div>
         
         <?php if(!empty($_SESSION['loggedUser'])) if ($_SESSION['loggedUser']->getRole()->getId() == 1) : ?>
