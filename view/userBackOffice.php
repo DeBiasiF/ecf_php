@@ -17,7 +17,10 @@ require_once "./view/partial/navbar.php";
     <div class="row">
         <div class="col-md-5">
             <table class="table" style="height: 500px; overflow-y: scroll;">
-                <h3>Mes Biens</h3>
+                <div class="d-flex justify-content-between">
+                    <h3>Mes Biens</h3>
+                    <a class="btn btn-outline-secondary" href="/ecf_php/index.php/addgood">Ajouter un bien</a>
+                </div>
                 <thead>
                     <tr>
                         <th>Nom</th>
