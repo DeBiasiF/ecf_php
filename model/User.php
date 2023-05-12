@@ -6,7 +6,24 @@ class User {
     private String $name;
     private String $password;
     private int $points;
-    private Role $role;       
+    private Role $role;
+
+    /**
+     * User constructor.
+     * @param int $id
+     * @param string $name
+     * @param string $password
+     * @param int $reward
+     * @param Role $role
+     */
+    public function __construct(int $id, String $name, String $password, int $points, Role $role)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->password = $password;
+        $this->points = $points;
+        $this->role = $role;
+    }
    
     /**
      * Get the value of id
@@ -128,3 +145,4 @@ class User {
         return $this;
     }
 }
+?>

@@ -5,7 +5,19 @@ class Category {
     private int $id;
     private String $name;
     private int $reward;
-          
+
+    /**
+     * Category constructor.
+     * @param int $id
+     * @param string $name
+     * @param int $reward
+     */
+    public function __construct(int $id, String $name, int $reward)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->reward = $reward;
+    }
 
     /**
      * Get the value of id
@@ -79,4 +91,5 @@ class Category {
         return $this;
     }
 }
+
 ?>

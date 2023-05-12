@@ -6,6 +6,17 @@ class Role {
     private String $name;
 
     /**
+     * Role constructor.
+     * @param int $id
+     * @param string $name
+     */
+    public function __construct(int $id, String $name)
+    {
+        $this->id = $id;
+        $this->name = $name;
+    }
+
+    /**
      * Get the value of id
      *
      * @return int

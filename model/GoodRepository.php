@@ -1,23 +1,23 @@
 <?php
 
-class GoodRepository {
+class GoodRepository implements RepositoryInterface {
        
     //Permet la création d'un Objet "Good"
-    public static function createGood(Array $myGood) : ?Good {
+    public static function create(Array $myGood) : ?Good {
         $status = self::getGoodDisponibility($myGood['id_goods']);
-        $good = new Good();
-        $good->setId($myGood['id_goods'])
-                ->setName(htmlspecialchars_decode($myGood['name_goods']))
-                ->setImg($myGood['img_goods'])
-                ->setDescription(htmlspecialchars_decode($myGood['description_goods']))
-                ->setStatus($status)
-                ->setCategory(CategoryRepository::getCategoryById($myGood['id_category']))
-                ->setLender(UserRepository::getUserById($myGood['id___user_lender']));
-        return $good;                
+        return new Good(
+            $myGood['id_goods'],
+            htmlspecialchars_decode($myGood['name_goods']),
+            $myGood['img_goods'],
+            htmlspecialchars_decode($myGood['description_goods']),
+            $status,
+            CategoryRepository::getById($myGood['id_category']),
+            UserRepository::getById($myGood['id___user_lender'])
+        );        
     }
 
     //Permet l'appel à l'integralité des biens et renvoie un tableau d'objet "Good"
-    public static function getAllGood() : Array {
+    public static function getAll() : Array {
         $connectionDB = Connect::getInstance();
         $stmt = $connectionDB->prepare('SELECT * FROM goods;');
         $stmt->execute();
@@ -25,51 +25,56 @@ class GoodRepository {
 
         $goodList=[];
         foreach ($result as $good) {
-            $goodList[]= self::createGood($good);
+            $goodList[]= self::create($good);
         }
         return $goodList;
     }
 
     //Permet l'ajout d'un bien
-    public static function addGood( String $name, String $description, int $category, int $lender) : int {
+    public static function add(Object $good) : int {
+
+        if (!$good instanceof Good) {
+            throw new InvalidArgumentException('Expected instance of Good');
+        }
+
         $connectionDB = Connect::getInstance();
 
-        $name = htmlspecialchars($name);
-        $description = htmlspecialchars($description);
         $img = self::saveImg();
 
         $stmt = $connectionDB->prepare('INSERT INTO goods (img_goods, name_goods, description_goods, Id_category, Id___user_lender) VALUES(:img, :name, :description, :category, :lender);');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
-        $stmt->bindValue(":name", $name, PDO::PARAM_STR);
-        $stmt->bindValue(":description", $description, PDO::PARAM_STR);
-        $stmt->bindValue(":category", $category, PDO::PARAM_INT);
-        $stmt->bindValue(":lender", $lender, PDO::PARAM_INT);
+        $stmt->bindValue(":name", htmlspecialchars($good->getName()), PDO::PARAM_STR);
+        $stmt->bindValue(":description", htmlspecialchars($good->getDescription()), PDO::PARAM_STR);
+        $stmt->bindValue(":category", $good->getCategory()->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":lender", $good->getLender()->getId(), PDO::PARAM_INT);
         $stmt->execute();
-        echo $description; 
         return $connectionDB->lastInsertId();
     }
 
     //Permet l'édition d'un bien
-    public static function updateGood(int $id, String $name, String $description, String $img, int $category, int $lender) : int {
+    public static function update(Object $good) : int {
+        
+        if (!$good instanceof Good) {
+            throw new InvalidArgumentException('Expected instance of Good');
+        }
+
         $connectionDB = Connect::getInstance();
 
-        $name = htmlspecialchars($name);
-        $description = htmlspecialchars($description);
-        (!empty($img))?$img = GoodRepository::saveImg():$img = self::getGoodById($id)->getImg();
+        (!empty($img))?$img = GoodRepository::saveImg():$img = self::getById($good->getId())->getImg();
         
         $stmt = $connectionDB->prepare('UPDATE goods SET img_goods = :img, name_goods = :nameGood, description_goods = :descriptionGood, Id_category = :category, Id___user_lender = :lender WHERE id_goods = :id ;');
         $stmt->bindValue(":img", $img, PDO::PARAM_STR);
-        $stmt->bindValue(":nameGood", $name, PDO::PARAM_STR);
-        $stmt->bindValue(":descriptionGood", $description, PDO::PARAM_STR);
-        $stmt->bindValue(":category", $category, PDO::PARAM_INT);
-        $stmt->bindValue(":lender", $lender, PDO::PARAM_INT);
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->bindValue(":name", htmlspecialchars($good->getName()), PDO::PARAM_STR);
+        $stmt->bindValue(":description", htmlspecialchars($good->getDescription()), PDO::PARAM_STR);
+        $stmt->bindValue(":category", $good->getCategory()->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":lender", $good->getLender()->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":id", $good->getId(), PDO::PARAM_INT);
         $stmt->execute();
-        return $id;
+        return $good->getId();
     }
 
     //Permet la suppression d'un bien
-    public static function deleteGood(int $goodId) : void {
+    public static function delete(int $goodId) : void {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('DELETE FROM goods WHERE id_goods = :id ;');
@@ -78,7 +83,7 @@ class GoodRepository {
     }
 
     //Permet l'appel à un objet "Good" via son ID
-    public static  function getGoodById(int $id) : ?Good {
+    public static  function getById(int $id) : ?Good {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('SELECT * FROM goods WHERE id_goods = :id ;');
@@ -87,7 +92,7 @@ class GoodRepository {
         $good = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (count($good) !== 0) {
-            return self::createGood($good[0]);
+            return self::create($good[0]);
         }else{
             return null;
         }    

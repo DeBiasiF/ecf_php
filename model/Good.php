@@ -11,6 +11,27 @@ class Good {
     private User $lender;       
 
     
+    /**
+     * Good constructor.
+     * @param int $id
+     * @param string $name
+     * @param string $img
+     * @param string $description
+     * @param bool $status
+     * @param Category $category
+     * @param User $lender
+     */
+    public function __construct(int $id, string $name, string $img, string $description, bool $status, Category $category, User $lender)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->img = $img;
+        $this->description = $description;
+        $this->status = $status;
+        $this->category = $category;
+        $this->lender = $lender;
+    }
+
 
     /**
      * Get the value of id

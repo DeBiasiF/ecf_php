@@ -1,67 +1,75 @@
 <?php
 
-class BorrowingRepository {
+class BorrowingRepository implements RepositoryInterface {
        
     //Permet la création d'un Objet "Borrowing"
-    public static function createBorrowing(Array $myBorrow) : ?Borrowing {
-        $borrowing = new Borrowing();
-        $borrowing->setId($myBorrow['id_borrowing'])
-                ->setStartBorrow($myBorrow['start_borrowing'])
-                ->setEndBorrow($myBorrow['end_borrowing'])
-                ->setBorrower(UserRepository::getUserById($myBorrow['id___user_borrower']))
-                ->setGood(GoodRepository::getGoodById($myBorrow['id_goods']));
-        return $borrowing;                
+    public static function create(Array $myBorrow) : ?Borrowing {
+        return new Borrowing(
+            $myBorrow['id_borrowing'],
+            $myBorrow['start_borrowing'],
+            $myBorrow['end_borrowing'],
+            UserRepository::getById($myBorrow['id___user_borrower']),
+            GoodRepository::getById($myBorrow['id_goods'])
+        );                 
     }
 
     //Permet l'appel à l'integralité des emprunts et renvoie un tableau d'objet "Borrowing"
-    public static function getAllBorrowing() : Array {
+    public static function getAll() : Array {
         $connectionDB = Connect::getInstance();
+        
         $stmt = $connectionDB->prepare('SELECT * FROM borrowing;');
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $borrowList=[];
         foreach ($result as $borrow) {
-            $borrowList[]= self::createBorrowing($borrow);
+            $borrowList[]= self::create($borrow);
         }
 
         return $borrowList;
     }
 
     //Permet l'ajout d'un emprunt
-    public static function addBorrowing(String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed) : int {
-        
+    public static function add(Object $borrowing) : int {
+
+        if (!$borrowing instanceof Borrowing) {
+            throw new InvalidArgumentException('Expected instance of Good');
+        }
         $connectionDB = Connect::getInstance();
 
-        if(self::getBorrowDisponibility($goodBorrowed, $startBorrow, $endBorrow)){
+        if(self::getBorrowDisponibility($borrowing->getGood()->getId(), $borrowing->getStartBorrow(), $borrowing->getEndBorrow())){
             $stmt = $connectionDB->prepare('INSERT INTO borrowing (start_borrowing, end_borrowing, Id___user_borrower, Id_goods) VALUES(:startBorrow, :endBorrow, :borrower, :good);');
-            $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-            $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
-            $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
-            $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
+            $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($borrowing->getStartBorrow())), PDO::PARAM_STR);
+            $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($borrowing->getEndBorrow())), PDO::PARAM_STR);
+            $stmt->bindValue(":borrower", $borrowing->getBorrower(), PDO::PARAM_INT);
+            $stmt->bindValue(":good", $borrowing->getGood()->getId(), PDO::PARAM_INT);
             $stmt->execute();
-            return $goodBorrowed;
+            return $borrowing->getGood()->getId();
         }
     }
 
     //Permet l'édition d'un emprunt
-    public static function updateBorrowing(int $id, String $startBorrow, String $endBorrow, int $borrower, int $goodBorrowed) : int {
+    public static function update(Object $borrowing) : int {
+
+        if (!$borrowing instanceof Borrowing) {
+            throw new InvalidArgumentException('Expected instance of Good');
+        }
         $connectionDB = Connect::getInstance();
 
-        if(self::getBorrowDisponibility($goodBorrowed, $startBorrow, $endBorrow)){
+        if(self::getBorrowDisponibility($borrowing->getGood()->getId(), $borrowing->getStartBorrow(), $borrowing->getEndBorrow())){
             $stmt = $connectionDB->prepare('UPDATE borrowing SET start_borrowing = :startBorrow end_borrowing = :endBorrow Id___user_borrower = :borrower Id_goods = :good WHERE id_borrowing = :id ;');
-            $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-            $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
-            $stmt->bindValue(":borrower", $borrower, PDO::PARAM_INT);
-            $stmt->bindValue(":good", $goodBorrowed, PDO::PARAM_INT);
-            $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+            $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($borrowing->getStartBorrow())), PDO::PARAM_STR);
+            $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($borrowing->getEndBorrow())), PDO::PARAM_STR);
+            $stmt->bindValue(":borrower", $borrowing->getBorrower(), PDO::PARAM_INT);
+            $stmt->bindValue(":good", $borrowing->getGood()->getId(), PDO::PARAM_INT);
+            $stmt->bindValue(":id", $borrowing->getId(), PDO::PARAM_INT);
             $stmt->execute();
-            return $id;
+            return $borrowing->getId();
         }
     }
 
     //Permet la suppression d'un emprunt
-    public static function deleteBorrowing(int $id) : void {
+    public static function delete(int $id) : void {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('DELETE FROM borrowing WHERE id_borrowing = :id ;');
@@ -70,7 +78,7 @@ class BorrowingRepository {
     }
 
     //Permet l'appel à un objet "Borrowing" via son ID
-    public static  function getBorrowingById(int $id) : ?Borrowing {
+    public static  function getById(int $id) : ?Borrowing {
         $connectionDB = Connect::getInstance();
 
         $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE id_borrowing = :id ;');
@@ -79,7 +87,7 @@ class BorrowingRepository {
         $borrow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if (count($borrow) !== 0) {
-            return self::createBorrowing($borrow[0]);
+            return self::create($borrow[0]);
         }else{
             return null;
         }    
@@ -97,7 +105,7 @@ class BorrowingRepository {
         if (count($borrows) !== 0) {
             $borrowList=[];
             foreach ($borrows as $borrow) {
-                $borrowList[]= self::createBorrowing($borrow);
+                $borrowList[]= self::create($borrow);
             }
         return $borrowList;
         }else{

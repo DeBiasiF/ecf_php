@@ -9,6 +9,24 @@ class Borrowing {
     private Good $good;       
 
     /**
+     * Constructeur de la classe Borrowing.
+     *
+     * @param int    $id
+     * @param string $startBorrow
+     * @param string $endBorrow
+     * @param User   $borrower
+     * @param Good   $good
+     */
+    public function __construct(int $id, string $startBorrow, string $endBorrow, User $borrower, Good $good)
+    {
+        $this->id = $id;
+        $this->startBorrow = $startBorrow;
+        $this->endBorrow = $endBorrow;
+        $this->borrower = $borrower;
+        $this->good = $good;
+    }
+
+    /**
      * Get the value of id
      *
      * @return int
