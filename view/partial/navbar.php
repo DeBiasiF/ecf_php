@@ -17,7 +17,7 @@
             <?php if (!empty($_SESSION['loggedUser'])) : //Si user authentifié affiche la deconnexion ?> 
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <span class="nav-link">Bonjour</span>
+                        <span class="nav-link">Bonjour  <?= $_SESSION['loggedUser']->getName(); ?></span>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?=$_SERVER['SCRIPT_NAME']?>/userbackoffice?id=<?=$_SESSION['loggedUser']->getId();?>">Interface Utilisateur</a>

@@ -3,15 +3,15 @@
 require_once "./view/partial/header.php";
 require_once "./view/partial/navbar.php";
 ?>
-<div class="container py-5">
+<div class="container">
     <div class="row">
-        <div class="col-lg-4 col-md-5 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div style="height: 400px; display: flex; justify-content: center; align-items: center;">
                 <img src="../<?=$good->getImg();?>" class="img-fluid rounded-circle" alt="Image de l'objet" style="max-height: 100%; max-width: 100%;">
             </div>
             <p><strong>Propriétaire : </strong><?= $good->getLender()->getName(); ?></p>
         </div>
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <h2>Réservations</h2>
             <div style="max-height: 400px; overflow-y: scroll;">
                 <table class="table">

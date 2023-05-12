@@ -3,8 +3,8 @@
 require_once "./view/partial/header.php";
 require_once "./view/partial/navbar.php";
 ?>
-<div class="container-fluid">
-    <h1>Les Biens</h1>
+<div class="container">
+    <h1>MyLocs</h1>
     <div class="mb-3">
         <label for="category-filter" class="form-label">Filtrer par catégorie :</label>
         <select class="form-control" id="category-filter">

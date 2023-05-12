@@ -118,14 +118,15 @@ class IndexControler {
                 if(isset($_GET) && empty($_POST)){
                     UserControler::updateUser($_GET['id']);
                     $_SESSION['returnDirection'] = $_SERVER['HTTP_REFERER'];
-                   }
-                   if (!empty($_POST['userName']) && ($_SESSION['loggedUser']->getId() == $_GET['id'] || $_SESSION['loggedUser']->getRole()->getId() == 1)) {
+                }
+                if (!empty($_POST['userName']) && ($_SESSION['loggedUser']->getId() == $_GET['id'] || $_SESSION['loggedUser']->getRole()->getId() == 1)) {
                     if (($_SESSION['loggedUser']->getRole()->getId() == 1)?UserControler::userUpdated($_GET['id'], $_POST['userName'], $_POST['userPoint']):UserControler::userUpdated($_GET['id'], $_POST['userName'], null)){
-                           $return = $_SESSION['returnDirection'];
-                           unset($_SESSION['returnDirection']);
-                           header("Location: ".$return);
-                       }
-                   }
+                        if ($_SESSION['loggedUser']->getId() == $_GET['id']) $_SESSION['loggedUser']->setName($_POST['userName']);
+                        $return = $_SESSION['returnDirection'];
+                        unset($_SESSION['returnDirection']);
+                        header("Location: ".$return);
+                    }
+                }
                 break;
         
             //Permet la suppression d'un user
@@ -144,20 +145,20 @@ class IndexControler {
                 break;
 
             //Affiche une page d'edition d'une catégorie
-            case 'ecf_php/index.php/updateuser':
+            case 'ecf_php/index.php/updatecategory':
                 if(isset($_GET) && empty($_POST)){
-                    CategoriesControler::updateCategory($_GET['id']);
-                    $_SESSION['returnDirection'] = $_SERVER['HTTP_REFERER'];
-                   }
-                   if (!empty($_POST['categoryName']) && !empty($_POST['categoryPoint']) && $_SESSION['loggedUser']->getRole()->getId() == 1) {
-                       if(CategoriesControler::categoryUpdated($_GET['id'], $_POST['categoryName'], $_POST['categoryPoint'])){
-                           $return = $_SESSION['returnDirection'];
-                           unset($_SESSION['returnDirection']);
-                           header("Location: ".$return);
-                       }
-                   }
+                        CategoriesControler::updateCategory($_GET['id']);
+                        $_SESSION['returnDirection'] = $_SERVER['HTTP_REFERER'];
+                    }
+                    if (!empty($_POST['categoryName']) && !empty($_POST['categoryPoint']) && $_SESSION['loggedUser']->getRole()->getId() == 1) {
+                        if(CategoriesControler::categoryUpdated($_GET['id'], $_POST['categoryName'], $_POST['categoryPoint'])){
+                            $return = $_SESSION['returnDirection'];
+                            unset($_SESSION['returnDirection']);
+                            header("Location: ".$return);
+                        }
+                    }
                 break;
-        
+
             //Permet la suppression d'une catégorie
             case 'ecf_php/index.php/deletecategory':
                 if($_GET) CategoriesControler::deleteCategory($_GET['id']);
@@ -212,7 +213,7 @@ class IndexControler {
         
             //Gestion par defaut
             default:
-                header("HTTP/1.0 405 Method Not Allowed");
+                header("HTTP/1.0 404 Page Not Found");
                 break;
         }
     }
