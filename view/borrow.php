@@ -22,7 +22,7 @@ require_once "./view/partial/navbar.php";
         <div class="col-md-6 col-sm-12">
             <h2>Réservations</h2>
             <div style="max-height: 400px; overflow-y: scroll;">
-                <table class="table">
+                <table class="table text-center">
                     <thead>
                         <tr>
                             <th>Date de début</th>

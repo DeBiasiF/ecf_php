@@ -5,7 +5,7 @@ require_once "./view/partial/navbar.php";
 ?>
 <div class="container">
 	<h1>Liste d'utilisateurs</h1>
-	<table class="table">
+	<table class="table text-center">
 		<thead>
 			<tr>
 				<th>Nom</th>
