@@ -128,37 +128,16 @@ class BorrowingRepository implements RepositoryInterface {
     }
 
     //Function permetant de savoir si une plage de reservation est possible
-    public static function getBorrowDisponibility(int $id, String $startBorrow, String $endBorrow): bool {
+    public static function getBorrowDisponibility(int $id, string $startBorrow, string $endBorrow): bool {
         $connectionDB = Connect::getInstance();
-
-        $stmt = $connectionDB->prepare('SELECT 1 FROM borrowing WHERE Id_goods = :id AND :startBorrow BETWEEN start_borrowing AND end_borrowing;');
-        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $testStart = !$stmt->fetch();
-
-        $stmt = $connectionDB->prepare('SELECT 1 FROM borrowing WHERE Id_goods = :id AND :endBorrow BETWEEN start_borrowing AND end_borrowing;');
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $testEnd = !$stmt->fetch();
-
-        $stmt = $connectionDB->prepare('SELECT 1 FROM borrowing WHERE Id_goods = :id AND start_borrowing BETWEEN :startBorrow AND :endBorrow;');
+    
+        $stmt = $connectionDB->prepare('SELECT 1 FROM borrowing WHERE Id_goods = :id AND ((start_borrowing > :endBorrow) OR (end_borrowing < :startBorrow));');
         $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
         $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
-        $testGlobalStart = !$stmt->fetch();
-
-        $stmt = $connectionDB->prepare('SELECT 1 FROM borrowing WHERE Id_goods = :id AND end_borrowing BETWEEN :startBorrow AND :endBorrow;');
-        $stmt->bindValue(":startBorrow", date("Y-m-d", strtotime($startBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":endBorrow", date("Y-m-d", strtotime($endBorrow)), PDO::PARAM_STR);
-        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $testGlobalEnd = !$stmt->fetch();
-        
-        return ($testStart && $testEnd && $testGlobalStart && $testGlobalEnd);
+        return ($stmt->fetch());
     }
-
 }
+
 ?>
