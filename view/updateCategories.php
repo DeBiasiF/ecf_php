@@ -9,7 +9,7 @@ require_once "./view/partial/navbar.php";
                 <label for="categoryName" class="form-label">Nom de la categorie</label>
                 <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Votre nom" value= "<?=$category->getName();?>">
                 <label for="categoryPoint" class="form-label">Points en récompense</label>
-                <input type="text" class="form-control" id="categoryPoint" name="categoryPoint" value= "<?=$category->getRewards();?>">
+                <input type="text" class="form-control" id="categoryPoint" name="categoryPoint" value= "<?=$category->getReward();?>">
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-primary">Enregistrer</button>

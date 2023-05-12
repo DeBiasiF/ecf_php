@@ -26,7 +26,7 @@ require_once "./view/partial/navbar.php";
             <input type="file" class="form-control" id="image" name="image">
         </div>
         <button type="submit" class="btn btn-primary">Envoyer</button>
-        <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</button>
+        <a href='<?=$_SERVER['HTTP_REFERER']?>' class="btn btn-secondary">Retour</a>
     </form>
 </div>
 <?php

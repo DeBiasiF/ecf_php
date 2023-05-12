@@ -5,18 +5,18 @@ require_once "./view/partial/navbar.php";
 <?php if(!empty($_SESSION['loggedUser'])) if (($_SESSION['loggedUser']->getRole()->getId() == 1)||($_SESSION['loggedUser']->getId() == $user->getId())) : ?>
     <div class="container">
         <div class="row mb-3">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <label for="userName" class="form-label">Nom d'utilisateur :</label>
                 <p class="fw-bold"><?=$user->getName();?></p>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <label for="userPoint" class="form-label">Points cumulés :</label>
                 <p class="fw-bold"><?=$user->getPoints();?></p>
             </div>
         </div>
         
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <table class="table text-center" style="height: 500px; overflow-y: scroll;">
                     <div class="d-flex justify-content-between">
                         <h3>Mes Biens</h3>
@@ -57,7 +57,7 @@ require_once "./view/partial/navbar.php";
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <table class="table text-center" style="height: 500px; overflow-y: scroll;">
                     <h3>Mes Reservations</h3>
                     <thead>
