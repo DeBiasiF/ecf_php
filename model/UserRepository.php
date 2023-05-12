@@ -129,7 +129,7 @@ class UserRepository {
     public static function getGoodRented (int $id): bool {
         $connectionDB = Connect::getInstance();
 
-        $stmt = $connectionDB->prepare('SELECT * FROM borrowing WHERE id___user_borrower = :id AND CURRENT_DATE BETWEEN start_borrowing AND end_borrowing;');
+        $stmt = $connectionDB->prepare('SELECT 1 FROM borrowing WHERE id___user_borrower = :id AND CURRENT_DATE BETWEEN start_borrowing AND end_borrowing;');
         $stmt->bindValue(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
         $status = $stmt->fetch();
