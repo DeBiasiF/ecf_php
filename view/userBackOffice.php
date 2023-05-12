@@ -101,40 +101,9 @@ require_once "./view/partial/navbar.php";
     <?php header("Location: ".$_SERVER['SCRIPT_NAME']);?>
 <?php endif ?>
 
-<script>
-
-    const valid = (id) => {
-    // Récupérer l'élément input idGood, l'élément de la date de debut et l'élément de la date de fin
-    	const send = document.querySelector("#send");
-		return fetch(`API/api.php?action=goodRented&id=${id}`)
-			.then(response => {
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			return response.json();
-			})
-			.then(data => {
-			return data.success;
-			})
-			.catch(error => {
-			console.error(error);
-			return false; // retourne false en cas d'erreur
-        });
-    };
-
-    const confirmDelete = (id) => {
-		console.log('toto');
-		return valid(id).then(isValid => {
-			if (isValid) {
-			return confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
-			} else {
-			alert('Cet utilisateur a un bien en cours de prêt.');
-			return false;
-			}
-		});
-	};
-
-</script>
 <?php
+//Importe le js
+UtilsControler::getJs("userbackoffice.js");
+//Importe le footer
 require_once "./view/partial/footer.php";
 ?>

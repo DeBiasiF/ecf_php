@@ -7,7 +7,7 @@ require_once "./view/partial/navbar.php";
 <div class="container">
     <h1>Reservation</h1>
     <div class="row">
-        <div class="col-lg-4 col-md-5 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <div class="form-group">
                 <label for="nom">Nom :</label>
                 <p class="form-control-static" id="nom"><?= $good->getName(); ?></p>
@@ -19,7 +19,7 @@ require_once "./view/partial/navbar.php";
                 <p><strong>Propriétaire : </strong><?= $good->getLender()->getName(); ?></p>
             </div>
         </div>
-        <div class="col-lg-4 col-md-5 col-sm-12">
+        <div class="col-md-6 col-sm-12">
             <h2>Réservations</h2>
             <div style="max-height: 400px; overflow-y: scroll;">
                 <table class="table">

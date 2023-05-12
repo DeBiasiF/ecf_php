@@ -41,4 +41,12 @@ class UtilsControler {
         return $user;
     }
 
+    //Fonction pour charger le fichier js d'une page
+    public static function getJs(String $fileName) {
+        $filePath = dirname(__DIR__) . '/view/js/' . $fileName;
+        echo "<script>";
+        include_once $filePath;
+        echo "</script>";
+    }
+    
 }

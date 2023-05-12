@@ -64,7 +64,7 @@ CREATE TABLE goods(
    id_goods SERIAL,
    name_goods VARCHAR(255)  NOT NULL,
    img_goods VARCHAR(255)  NOT NULL,
-   description_goods VARCHAR(255)  NOT NULL,
+   description_goods TEXT  NOT NULL,
    id_category INTEGER,
    id___user_lender INTEGER NOT NULL,
    PRIMARY KEY(id_goods),
